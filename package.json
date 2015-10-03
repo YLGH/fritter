@@ -1,0 +1,14 @@
+{
+  "name": "kimberli-fritter",
+  "version": "1.0.0",
+  "description": "fritter for 6.170",
+  "private": true,
+  "main": "bin/www",
+  "dependencies": {
+    "ejs": "^2.3.4",
+    "express": "^4.13.3"
+  },
+  "scripts": {
+    "start": "node ./bin/www"
+  }
+}
