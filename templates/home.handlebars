@@ -1,0 +1,16 @@
+<div id="home">
+  <div id="user">
+    {{#if currentUser}}
+      <p> You're logged in as {{currentUser}}</p>
+      <form>
+        <input id="freet-input" type="text">
+        <button id="freet-button" type="submit">Freet!</button>
+      </form>
+    {{else}}
+    <form>
+      <input id="username-input" type="text">
+      <button id="login-button" type="submit">Log in</button>
+    </form>
+    {{/if}}
+  </div>
+</div>
