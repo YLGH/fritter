@@ -19,4 +19,9 @@
     </form>
     {{/if}}
   </div>
+  <div id="freet-container">
+    {{#each freets}}
+      <div class="freet">{{this.text}} {{this._user}}</div>
+    {{/each}}
+  </div>
 </div>

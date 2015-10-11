@@ -3,11 +3,20 @@ Handlebars.registerPartial('home', Handlebars.templates['home']);
 currentUser = undefined;
 
 var loadPage = function(template, data) {
-    data = data || {};
-    $('#container').html(Handlebars.templates[template](data));
+    data = data || {currentUser: currentUser};
+    $.get('/freets', function(response) {
+        data["freets"] = response.content;
+        $('#container').html(Handlebars.templates[template](data));
+    });
 }
 
-
 $(function() {
-    loadPage('home',{currentUser: currentUser});
+    $.get('/users/current', function(response) {
+        if (response.content.loggedIn) {
+            currentUser = response.content.user;
+        } else {
+            currentUser = undefined;
+        }
+        loadPage('home',{currentUser: currentUser});
+    });
 });

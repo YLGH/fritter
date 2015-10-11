@@ -50,11 +50,11 @@ router.post('/create', function(req, res) {
 });
 
 router.get('/current', function(req, res) {
-  if (User.userExists(req.currentUser)) {
-    utils.sendSuccessResponse(res, { loggedIn : true, user : req.currentUser.username });
-  } else {
-    utils.sendSuccessResponse(res, { loggedIn : false });
-  }
+    if (req.currentUser) {
+        utils.sendSuccessResponse(res, { loggedIn : true, user : req.currentUser.username });
+    } else {
+        utils.sendSuccessResponse(res, { loggedIn : false });
+    }
 });
 
 module.exports = router;

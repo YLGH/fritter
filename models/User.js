@@ -10,6 +10,8 @@ var User = (function User(_users) {
     that.findByUsername = function(username, callback) {
         if (userExists(username)) {
             callback(null, {username: username} );
+        } else {
+            callback("User does not exist");
         }
     }
 

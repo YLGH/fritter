@@ -12,6 +12,8 @@ var app = express();
 //route handlers
 var index = require('./routes/index');
 var users = require('./routes/users');
+var freets = require('./routes/freets');
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -43,5 +45,6 @@ app.use(function(req, res, next) {
 //map paths
 app.use('/', index);
 app.use('/users', users);
+app.use('/freets', freets);
 
 module.exports = app;

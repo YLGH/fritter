@@ -3,11 +3,19 @@ var _store = [];
 var Freet = (function Freet(_store) {
     var that = Object.create(Freet.prototype);
 
-    that.addFreet = function (username, freet, callback) {
-        freet._id = store.length;
-        freet._user = username;
-         _store.push(freet);
-         callback(null)
+    that.addFreet = function (username, freet, timestamp, callback) {
+        if (username) {
+            freetObj = {
+                text: freet,
+                _ts: timestamp,
+                _user: username
+            };
+             _store.push(freetObj);
+            callback(null, {id: freet._id})
+        }
+        else {
+            callback("Missing username");
+        }
     };
 
     that.getFreets = function(callback) {
@@ -24,6 +32,6 @@ var Freet = (function Freet(_store) {
     Object.freeze(that);
     return that;
 
-}(_store);
+})(_store);
 
 module.exports = Freet;
