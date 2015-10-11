@@ -1,4 +1,5 @@
 var uuid = require('node-uuid');
+var User = require('./User.js');
 var _store = [];
 
 var Freet = (function Freet(_store) {
@@ -11,19 +12,20 @@ var Freet = (function Freet(_store) {
     }
 
     that.addFreet = function (username, freet, timestamp, callback) {
-        if (username) {
-            freetObj = {
-                text: freet,
-                ts: timestamp,
-                _user: username,
-                _id: uuid.v4()
-            };
-             _store.push(freetObj);
-            callback(null, {id: freet._id})
-        }
-        else {
-            callback("Missing username");
-        }
+        User.findByUsername(username, function(err, result) {
+            if (err) {
+                callback("Invalid username");
+            } else {
+                freetObj = {
+                    text: freet,
+                    ts: timestamp,
+                    _user: username.toLowerCase(),
+                    _id: uuid.v4()
+                };
+                 _store.push(freetObj);
+                callback(null, {id: freetObj._id})
+            }
+        });
     };
 
     that.getFreetById = function(id, callback) {
@@ -50,6 +52,10 @@ var Freet = (function Freet(_store) {
         } else {
             callback("Freet not found");
         }
+    }
+
+    that.clearFreets = function() {
+        _store = [];
     }
 
     Object.freeze(that);

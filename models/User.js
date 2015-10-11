@@ -8,11 +8,15 @@ var User = (function User(_users) {
     }
 
     that.findByUsername = function(username, callback) {
-        username = username.toLowerCase();
-        if (userExists(username)) {
-            callback(null, {username: username} );
+        if (username) {
+            username = username.toLowerCase();
+            if (!userExists(username)) {
+                callback("User does not exist");
+            } else {
+                callback(null, {username: username} );
+            }
         } else {
-            callback("User does not exist");
+            callback("Username undefined");
         }
     }
 
