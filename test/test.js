@@ -45,7 +45,7 @@ describe("User", function() {
         });
 
         // test existing user different capitalization
-        it("should not return error when user exists", function () {
+        it("should not return error when user exists with different capitalization", function () {
             User.authUser("Kim", function(err, result) {
                 assert.deepEqual(err, null);
             });
@@ -93,7 +93,7 @@ describe("User", function() {
         });
 
         // test new user capitalized
-        it("should not return error when user does not exist", function () {
+        it("should not return error when username capitalized", function () {
             User.createUser("Blah", function(err, result) {
                 assert.deepEqual(err, null);
                 assert.deepEqual(result, {username: "blah"});
@@ -212,7 +212,7 @@ describe("Freet", function() {
         });
 
         // test delete freet invalid id
-        it("should fail when valid id and unauthorized user", function () {
+        it("should fail when invalid id", function () {
             User.createUser("user1", function(){});
             Freet.addFreet("user1", "hello world", Date.now(), function(){});
             Freet.deleteFreetById("user1", "fakeId", function(err, result) {
