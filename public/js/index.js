@@ -5,7 +5,14 @@ currentUser = undefined;
 var loadPage = function(template, data) {
     data = data || {currentUser: currentUser};
     $.get('/freets', function(response) {
+        (response.content).forEach(function(f) {
+            if (currentUser === f._user) {
+                console.log(currentUser, f._user);
+                f["ownership"] = true;
+            }
+        });
         data["freets"] = response.content;
+        console.log(data);
         $('#container').html(Handlebars.templates[template](data));
     });
 }

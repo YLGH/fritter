@@ -9,6 +9,18 @@ router.get('/', function(req, res) {
     });
 });
 
+router.get('/:fid', function(req, res) {
+    Freet.getFreetById(req.params.fid, function(err,result) {
+        console.log(req.params.fid);
+        if (err) {
+            utils.sendErrResponse(res, 403, err);
+        } else {
+            console.log(result);
+            utils.sendSuccessResponse(res, result);
+        }
+    });
+});
+
 router.post('/add', function(req, res) {
     Freet.addFreet(req.currentUser.username, req.body.freet, Date.now(), function(err, result) {
         if (err) {
@@ -19,5 +31,14 @@ router.post('/add', function(req, res) {
     });
 })
 
+router.post('/delete', function(req, res) {
+    Freet.deleteFreetById(req.currentUser.username, req.body.freetId, function(err, result) {
+        if (err) {
+            utils.sendErrResponse(res, 403, err);
+        } else {
+            utils.sendSuccessResponse(res, result);
+        }
+    });
+})
 
 module.exports = router;

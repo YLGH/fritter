@@ -9,8 +9,20 @@ $(function() {
             loadPage('home');
         }).fail(function(responseObject) {
             var response = $.parseJSON(responseObject.responseText);
-            console.log(response.err);
-            $('#freet-error').text(response.err);
+            helpers.displayError(response.err);
+        });
+    });
+
+    $(document).on("click", ".delete-button", function(e) {
+        var id = $(e.target).attr("freet");
+        $.post(
+            '/freets/delete',
+            { freetId: id }
+        ).done(function(response) {
+            loadPage('home');
+        }).fail(function(responseObject) {
+            var response = $.parseJSON(responseObject.responseText);
+            helpers.displayError(response.err);
         });
     });
 

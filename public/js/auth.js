@@ -11,8 +11,7 @@ $(function() {
             loadPage('home',{currentUser: currentUser});
         }).fail(function(responseObject) {
             var response = $.parseJSON(responseObject.responseText);
-            console.log(response.err);
-            $('#login-error').text(response.err);
+            helpers.displayError(response.err);
         });
     });
 
@@ -28,8 +27,7 @@ $(function() {
             loadPage('home',{currentUser: currentUser});
         }).fail(function(responseObject) {
             var response = $.parseJSON(responseObject.responseText);
-            console.log(response.err);
-            $('#login-error').text(response.err);
+            helpers.displayError(response.err);
         });
     });
 
@@ -43,7 +41,7 @@ $(function() {
             loadPage('home',{currentUser: currentUser});
         }).fail(function(responseObject) {
             var response = $.parseJSON(responseObject.responseText);
-            $('#freet-error').text(response.err);
+            helpers.displayError(response.err);
         }); 
     });
 });

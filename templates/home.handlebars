@@ -1,14 +1,13 @@
 <div id="home">
   <div id="user">
+    <div id="error"></div>
     {{#if currentUser}}
-    <div id="freet-error"></div>
     <p> Hey {{currentUser}}!</p> <button id="logout-button">Log out</button>
     <form>
       <input id="freet-input" type="text">
       <button id="freet-button" type="submit">Freet!</button>
     </form>
     {{else}}
-    <div id="login-error"></div>
     <form id="login-form">
       <input name="username" type="text">
       <button id="login-button" type="submit">Log in</button>
@@ -21,7 +20,8 @@
   </div>
   <div id="freet-container">
     {{#each freets}}
-      <div class="freet">{{this.text}} {{this._user}}</div>
+      <div id={{this._id}} class="freet">{{this.text}} {{this._user}}</div>
+      {{#if this.ownership}}<button freet={{this._id}} class="delete-button">Delete</button>{{/if}}
     {{/each}}
   </div>
 </div>
