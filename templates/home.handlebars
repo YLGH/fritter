@@ -1,15 +1,21 @@
 <div id="home">
   <div id="user">
     {{#if currentUser}}
-      <p> You're logged in as {{currentUser}}</p>
-      <form>
-        <input id="freet-input" type="text">
-        <button id="freet-button" type="submit">Freet!</button>
-      </form>
-    {{else}}
+    <div id="freet-error"></div>
+    <p> Hey {{currentUser}}!</p> <button id="logout-button">Log out</button>
     <form>
-      <input id="username-input" type="text">
+      <input id="freet-input" type="text">
+      <button id="freet-button" type="submit">Freet!</button>
+    </form>
+    {{else}}
+    <div id="login-error"></div>
+    <form id="login-form">
+      <input name="username" type="text">
       <button id="login-button" type="submit">Log in</button>
+    </form>
+    <form id="register-form">
+      <input name="username" type="text">
+      <button id="register-button" type="submit">Register</button>
     </form>
     {{/if}}
   </div>
