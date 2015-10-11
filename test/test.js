@@ -1,39 +1,104 @@
 var assert = require("assert");
+var User = require("../models/User.js");
+var Freet = require("../models/Freet.js");
 
-// Array is the module under test.
-describe('Array', function() {
-  // indexOf is the method under test.
-  describe('#indexOf()', function () {
-    
-    // This is a test, we indicate what we're testing for.
-    it('should return -1 when the value is not present', function () {
-      assert.equal(-1, [1,2,3].indexOf(5));
-      assert.equal(-1, [1,2,3].indexOf(0));
+
+// test user model
+describe("User", function() {
+
+    User.createUser("kim", function() {});
+
+    //test findByUsername
+    describe("#findByUsername", function () {
+        // test nonexistent user
+        it("should return error when user does not exist", function () {
+            User.findByUsername("hello", function(err, result) {
+                assert.notDeepEqual(err, null);
+            });
+        });
+
+        // test created user
+        it("should return username when user exists", function () {
+            User.findByUsername("kim", function(err, result) {
+                assert.deepEqual(err, null);
+                assert.deepEqual(result, {username: "kim"});
+            });
+        });
+
     });
 
+    //test authUser
+    describe("#authUser", function () {
 
-    // Another test.
-    it('should find values that exist', function() {
-      assert.equal(0, [1, 2, 3].indexOf(1));
-      assert.equal(2, [1, 2, 3].indexOf(3));
+        // test nonexistent user
+        it("should return error when user does not exist", function () {
+            User.authUser("hello", function(err, result) {
+                assert.notDeepEqual(err, null);
+            });
+        });
+
+        // test existing user
+        it("should not return error when user exists", function () {
+            User.findByUsername("kim", function(err, result) {
+                assert.deepEqual(err, null);
+            });
+        });
+
+        // test existing user different capitalization
+        it("should not return error when user exists", function () {
+            User.findByUsername("Kim", function(err, result) {
+                assert.deepEqual(err, null);
+            });
+        });
+
     });
 
-  }); // End describe indexOf.
+    //test createUser
+    describe("#createUser", function () {
+        // test nonexistent user
+        it("should return error when user exists", function () {
+            User.createUser("bob", function() {});
+            User.createUser("bob", function(err, result) {
+                assert.notDeepEqual(err, null);
+            });
+        });
 
-  // map is the method under test.
-  describe('#map', function() {
-    
-    // This is a test.
-    it('should map values given a function', function() {
-      assert.deepEqual([2, 4, 6], [1, 2, 3].map(function(x) { return 2 * x; }));
+        // test username min length
+        it("should return error when username too short", function () {
+            User.createUser("ki", function(err, result) {
+                assert.notDeepEqual(err, null);
+            });
+        });
+
+        // test username max length
+        it("should return error when username too long", function () {
+            User.createUser("kewfewfweewfefwgi", function(err, result) {
+                assert.notDeepEqual(err, null);
+            });
+        });
+
+        // test username invalid characters
+        it("should return error when username has invalid chars", function () {
+            User.createUser("hi<>mi", function(err, result) {
+                assert.notDeepEqual(err, null);
+            });
+        });
+
+        // test new user
+        it("should not return error when user does not exist", function () {
+            User.createUser("eek", function(err, result) {
+                assert.deepEqual(err, null);
+                assert.deepEqual(result, {username: "eek"});
+            });
+        });
+
+        // test new user capitalized
+        it("should not return error when user does not exist", function () {
+            User.createUser("Blah", function(err, result) {
+                assert.deepEqual(err, null);
+                assert.deepEqual(result, {username: "blah"});
+            });
+        });
     });
 
-
-    // Another test.
-    it('should work on empty arrays', function() {
-      assert.deepEqual([], [].map(function(x) { return 2 * x; }));
-    });
-
-  }); // End describe map.
-
-}); // End describe Array.
+});

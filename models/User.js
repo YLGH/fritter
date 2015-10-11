@@ -8,6 +8,7 @@ var User = (function User(_users) {
     }
 
     that.findByUsername = function(username, callback) {
+        username = username.toLowerCase();
         if (userExists(username)) {
             callback(null, {username: username} );
         } else {
@@ -16,6 +17,7 @@ var User = (function User(_users) {
     }
 
     that.authUser = function(username, callback) {
+        username = username.toLowerCase();
         if (!userExists(username)) {
             callback("Invalid login");
         } else {
@@ -24,11 +26,14 @@ var User = (function User(_users) {
     }
 
     that.createUser = function(username, callback) {
+        username = username.toLowerCase();
         if (userExists(username)) {
-          callback("Username already exists");
+            callback("Username already exists");
+        } else if (!username.match("^[a-z0-9_-]{3,16}$")) {
+            callback("Username should consist of letters, numbers, underscores, and be between 3 and 16 characters long.")
         } else {
-          _users.push(username);
-          callback(null);
+            _users.push(username);
+            callback(null, {username: username});
         }
     };
 
