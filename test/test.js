@@ -19,7 +19,7 @@ describe("User", function() {
 
         // test created user
         it("should return username when user exists", function () {
-            User.findByUsername("kim", function(err, result) {
+            User.findByUsername("Kim", function(err, result) {
                 assert.deepEqual(err, null);
                 assert.deepEqual(result, {username: "kim"});
             });
@@ -39,14 +39,14 @@ describe("User", function() {
 
         // test existing user
         it("should not return error when user exists", function () {
-            User.findByUsername("kim", function(err, result) {
+            User.authUser("kim", function(err, result) {
                 assert.deepEqual(err, null);
             });
         });
 
         // test existing user different capitalization
         it("should not return error when user exists", function () {
-            User.findByUsername("Kim", function(err, result) {
+            User.authUser("Kim", function(err, result) {
                 assert.deepEqual(err, null);
             });
         });
