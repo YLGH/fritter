@@ -1,4 +1,22 @@
 $(function() {
+
+    //Show login
+    $(document).on("click", "#show-login", function(e) {
+        helpers.showPopup();
+        $('#popup').html(Handlebars.templates["login"]({register: false}));
+    });
+
+    //Show register
+    $(document).on("click", "#show-register", function(e) {
+        helpers.showPopup();
+        $('#popup').html(Handlebars.templates["login"]({register: true}));
+    });
+
+    //Hide popup
+    $(document).on("click", "#close-popup", function(e) {
+        helpers.hidePopup();
+    });
+
     //Log in
     $(document).on("click", "#login-button", function(e) {
         e.preventDefault();
@@ -8,10 +26,11 @@ $(function() {
             { username: username }
         ).done(function(response) {
             currentUser = response.content.user;
-            loadPage('home',{currentUser: currentUser});
+            helpers.hidePopup();
+            loadPage({currentUser: currentUser});
         }).fail(function(responseObject) {
             var response = $.parseJSON(responseObject.responseText);
-            helpers.displayError(response.err);
+            helpers.displayError("#login-error",response.err);
         });
     });
 
@@ -24,10 +43,11 @@ $(function() {
             { username: username }
         ).done(function(response) {
             currentUser = response.content.user;
-            loadPage('home',{currentUser: currentUser});
+            helpers.hidePopup();
+            loadPage({currentUser: currentUser});
         }).fail(function(responseObject) {
             var response = $.parseJSON(responseObject.responseText);
-            helpers.displayError(response.err);
+            helpers.displayError("#login-error",response.err);
         });
     });
 
@@ -38,10 +58,10 @@ $(function() {
             '/users/logout'
         ).done(function(response) {
             currentUser = undefined;
-            loadPage('home',{currentUser: currentUser});
+            loadPage({currentUser: currentUser});
         }).fail(function(responseObject) {
             var response = $.parseJSON(responseObject.responseText);
-            helpers.displayError(response.err);
+            helpers.displayError("#login-error",response.err);
         }); 
     });
 });

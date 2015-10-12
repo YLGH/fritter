@@ -1,19 +1,23 @@
 Handlebars.registerPartial('home', Handlebars.templates['home']);
+Handlebars.registerPartial('header', Handlebars.templates['header']);
+Handlebars.registerPartial('login', Handlebars.templates['login']);
+
 
 currentUser = undefined;
 
-var loadPage = function(template, data) {
+var loadPage = function(data) {
     data = data || {currentUser: currentUser};
     $.get('/freets', function(response) {
         (response.content).forEach(function(f) {
+            f.ts = moment(f.ts).fromNow();
             if (currentUser === f._user) {
-                console.log(currentUser, f._user);
                 f["ownership"] = true;
             }
         });
-        data["freets"] = response.content;
-        console.log(data);
-        $('#container').html(Handlebars.templates[template](data));
+        data["freets"] = response.content.reverse();
+        $('#container').html(Handlebars.templates["home"](data));
+        $('#header').html(Handlebars.templates["header"]({currentUser: currentUser}));
+        console.log($('.freet-time'));
     });
 }
 
@@ -24,6 +28,6 @@ $(function() {
         } else {
             currentUser = undefined;
         }
-        loadPage('home',{currentUser: currentUser});
+        loadPage({currentUser: currentUser});
     });
 });

@@ -1,27 +1,22 @@
 <div id="home">
   <div id="user">
-    <div id="error"></div>
+    <div id="freet-error" class="error"></div>
     {{#if currentUser}}
-    <p> Hey {{currentUser}}!</p> <button id="logout-button">Log out</button>
-    <form>
-      <input id="freet-input" type="text">
-      <button id="freet-button" type="submit">Freet!</button>
-    </form>
-    {{else}}
-    <form id="login-form">
-      <input name="username" type="text">
-      <button id="login-button" type="submit">Log in</button>
-    </form>
-    <form id="register-form">
-      <input name="username" type="text">
-      <button id="register-button" type="submit">Register</button>
-    </form>
+    <div id="new-freet-box">
+      <form id="freet-form">
+        <input id="freet-input" class="input" type="text" maxlength="160">
+        <button id="freet-button" class="button" type="submit">Freet!</button>
+      </form>
+    </div>
     {{/if}}
   </div>
   <div id="freet-container">
     {{#each freets}}
-      <div id={{this._id}} class="freet">{{this.text}} {{this._user}}</div>
-      {{#if this.ownership}}<button freet={{this._id}} class="delete-button">Delete</button>{{/if}}
+      <div id={{this._id}} class="freet-box">
+        {{#if this.ownership}}<button freet={{this._id}} class="delete-button no-border">X</button>{{/if}}
+        <div class="freet-user">@{{this._user}} </div>
+        <em class="freet-time">({{this.ts}})</em> - <p class="freet-text">{{this.text}}</p>
+      </div>
     {{/each}}
   </div>
 </div>

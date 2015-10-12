@@ -1,4 +1,5 @@
 $(function() {
+
     $(document).on("click", "#freet-button", function(e) {
         e.preventDefault();
         var freet = $("#freet-input").val();
@@ -6,10 +7,10 @@ $(function() {
             '/freets/add',
             { freet: freet }
         ).done(function(response) {
-            loadPage('home');
+            loadPage();
         }).fail(function(responseObject) {
             var response = $.parseJSON(responseObject.responseText);
-            helpers.displayError(response.err);
+            helpers.displayError("#freet-error",response.err);
         });
     });
 
@@ -19,10 +20,10 @@ $(function() {
             '/freets/delete',
             { freetId: id }
         ).done(function(response) {
-            loadPage('home');
+            loadPage();
         }).fail(function(responseObject) {
             var response = $.parseJSON(responseObject.responseText);
-            helpers.displayError(response.err);
+            helpers.displayError("#freet-error",response.err);
         });
     });
 
