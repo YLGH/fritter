@@ -96,7 +96,7 @@ body {
 
 #freet-button {
   position: relative;
-  top: -1px; }
+  top: -2px; }
 
 /* Freets */
 .freet-box {
@@ -132,7 +132,7 @@ body {
 
 .button {
   border: none;
-  height: 34px;
+  height: 33px;
   margin: 20px auto;
   padding: 0 20px;
   background-color: #BD1550;
