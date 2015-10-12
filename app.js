@@ -19,11 +19,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public'))); // make public files accessible
-app.use(session({ secret : 'dankmemes', resave: false, saveUninitialized: false }));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(session({ secret : 'dankmemes', resave: false, saveUninitialized: false }));
+
 
 //authentication middleware
 app.use(function(req, res, next) {
