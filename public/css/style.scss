@@ -21,6 +21,7 @@ body {
     background-color: white;
     padding: 20px 60px;
     border: 8px double $secondary;
+    min-height: calc(100vh - 250px);
 }
 
 /* Header */

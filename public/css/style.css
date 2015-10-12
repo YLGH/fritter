@@ -13,7 +13,8 @@ body {
   margin: 0 auto;
   background-color: white;
   padding: 20px 60px;
-  border: 8px double #BD1550; }
+  border: 8px double #BD1550;
+  min-height: calc(100vh - 250px); }
 
 /* Header */
 #header {
