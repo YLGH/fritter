@@ -4,12 +4,27 @@ var router = express.Router();
 var utils = require('../utils/utils');
 var Freet = require('../models/Freet');
 
+/*
+  GET /freets - get all freets
+  Request parameters: none
+  Response: 
+    - success: true if getFreets succeeded
+    - content: on success, a list of all freet objects
+ */
 router.get('/', function(req, res) {
     Freet.getFreets(function(err,result) {
         utils.sendSuccessResponse(res, result);
     });
 });
 
+/*
+  GET /freets/{freetId} - get a single freet
+  Request parameters: none
+  Response: 
+    - success: true if getFreetById succeeded
+    - content: on success, the freet object
+    - err: on failure, an error message
+ */
 router.get('/:fid', function(req, res) {
     Freet.getFreetById(req.params.fid, function(err,result) {
         if (err) {
@@ -20,6 +35,15 @@ router.get('/:fid', function(req, res) {
     });
 });
 
+/*
+  POST /freets/add - add a new freet (must be valid user)
+  Request parameters:
+    - freet: text of the freet to add
+  Response: 
+    - success: true if freet addition succeeded
+    - content: on success, the freet ID
+    - err: on failure, an error message
+ */
 router.post('/add', function(req, res) {
     Freet.addFreet(req.currentUser.username, req.body.freet, moment(), function(err, result) {
         if (err) {
@@ -30,6 +54,15 @@ router.post('/add', function(req, res) {
     });
 })
 
+/*
+  POST /freets/delete - delete a freet (must be authorized user)
+  Request parameters:
+    - freetId: the freet UUID
+  Response: 
+    - success: true if freet deletion succeeded
+    - content: on success, the freet object
+    - err: on failure, an error message
+ */
 router.post('/delete', function(req, res) {
     Freet.deleteFreetById(req.currentUser.username, req.body.freetId, function(err, result) {
         if (err) {

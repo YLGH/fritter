@@ -3,6 +3,9 @@ var router = express.Router();
 var utils = require('../utils/utils');
 var User = require('../models/User');
 
+/**
+ * Helper function to check whether the user request is valid
+ */
 var isValidUserReq = function(req, res) {
     if (req.currentUser) {
         utils.sendErrResponse(res, 403, 'There is already a user logged in.');
@@ -14,6 +17,15 @@ var isValidUserReq = function(req, res) {
     return true;
 };
 
+/*
+  POST /users/login - log in a user
+  Request parameters:
+    - username: the username of the user
+  Response: 
+    - success: true if login succeeded
+    - content: on success, the username
+    - err: on failure, an error message
+ */
 router.post('/login', function(req, res) {
     if (isValidUserReq(req, res)) {
         User.authUser(req.body.username, function(err,result) {
@@ -27,6 +39,13 @@ router.post('/login', function(req, res) {
     }
 });
 
+/*
+  POST /users/logout - log out a user
+  Request parameters: none
+  Response: 
+    - success: true if login succeeded
+    - err: on failure, an error message
+ */
 router.post('/logout', function(req, res) {
     if (req.currentUser) {
         req.session.destroy();
@@ -36,6 +55,15 @@ router.post('/logout', function(req, res) {
     }
 });
 
+/*
+  POST /users/create - create a user
+  Request parameters:
+    - username: the username of the user
+  Response: 
+    - success: true if login succeeded
+    - content: on success, the username
+    - err: on failure, an error message
+ */
 router.post('/create', function(req, res) {
     if (isValidUserReq(req, res)) {
         User.createUser(req.body.username, function(err,result) {
@@ -49,6 +77,13 @@ router.post('/create', function(req, res) {
     }
 });
 
+/*
+  GET /users/current - get current login status
+  Request parameters: none
+  Response: 
+    - success: true if login succeeded
+    - content: on success, an object with loggedIn as either true or false and the username if logged in
+ */
 router.get('/current', function(req, res) {
     if (req.currentUser) {
         utils.sendSuccessResponse(res, { loggedIn : true, user : req.currentUser.username });

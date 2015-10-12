@@ -1,10 +1,12 @@
+// Register partials
 Handlebars.registerPartial('home', Handlebars.templates['home']);
 Handlebars.registerPartial('header', Handlebars.templates['header']);
 Handlebars.registerPartial('login', Handlebars.templates['login']);
 
-
+// Track currentUser locally for easier templating
 currentUser = undefined;
 
+// Load the main page with the appropriate data
 var loadPage = function(data) {
     data = data || {currentUser: currentUser};
     $.get('/freets', function(response) {
@@ -21,6 +23,7 @@ var loadPage = function(data) {
     });
 }
 
+// Initialize the main page with tweets
 $(function() {
     $.get('/users/current', function(response) {
         if (response.content.loggedIn) {

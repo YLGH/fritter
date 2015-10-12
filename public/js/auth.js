@@ -1,23 +1,23 @@
 $(function() {
 
-    //Show login
+    // Show login popup
     $(document).on("click", "#show-login", function(e) {
         helpers.showPopup();
         $('#popup').html(Handlebars.templates["login"]({register: false}));
     });
 
-    //Show register
+    // Show register popup
     $(document).on("click", "#show-register", function(e) {
         helpers.showPopup();
         $('#popup').html(Handlebars.templates["login"]({register: true}));
     });
 
-    //Hide popup
+    // Hide popup
     $(document).on("click", "#close-popup", function(e) {
         helpers.hidePopup();
     });
 
-    //Log in
+    // Log in AJAX request
     $(document).on("click", "#login-button", function(e) {
         e.preventDefault();
         var username = $("#login-form input[name=username]").val();
@@ -34,7 +34,7 @@ $(function() {
         });
     });
 
-    //Log in
+    // Register AJAX request
     $(document).on("click", "#register-button", function(e) {
         e.preventDefault();
         var username = $("#register-form input[name=username]").val();
@@ -51,7 +51,7 @@ $(function() {
         });
     });
 
-    //Log out
+    // Log out
     $(document).on("click", "#logout-button", function(e) {
         currentUser = undefined;
         $.post(

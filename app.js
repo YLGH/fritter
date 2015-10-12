@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(session({ secret : 'dankmemes', resave: false, saveUninitialized: false }));
 
 
-//authentication middleware
+// Authentication middleware
 app.use(function(req, res, next) {
   if (req.session.username) {
     User.findByUsername(req.session.username, 
@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
   }
 });
 
-//map paths
+// Map paths
 app.use('/', index);
 app.use('/users', users);
 app.use('/freets', freets);

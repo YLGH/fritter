@@ -1,12 +1,27 @@
 var _users = [];
 
+/**
+ * User model - describes a user object
+ */
 var User = (function User(_users) {
     var that = Object.create(User.prototype);
 
+    /**
+     * Check if user exists
+     *
+     * @param username {string} - username to check
+     * @return - true if user exists and false otherwise
+     */
     var userExists = function(username) {
         return _users.indexOf(username) !== -1;
     }
 
+    /**
+     * Find a user by username
+     *
+     * @param username {string} - username to check
+     * @param callback {function} - function to call with error and result
+     */
     that.findByUsername = function(username, callback) {
         if (username) {
             username = username.toLowerCase();
@@ -20,6 +35,12 @@ var User = (function User(_users) {
         }
     }
 
+    /**
+     * Authenticate a user
+     *
+     * @param username {string} - username to check
+     * @param callback {function} - function to call with error and result
+     */
     that.authUser = function(username, callback) {
         username = username.toLowerCase();
         if (!userExists(username)) {
@@ -29,6 +50,12 @@ var User = (function User(_users) {
         }
     }
 
+    /**
+     * Create a new user
+     *
+     * @param username {string} - username to create
+     * @param callback {function} - function to call with error and result
+     */
     that.createUser = function(username, callback) {
         username = username.toLowerCase();
         if (userExists(username)) {

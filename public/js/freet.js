@@ -1,5 +1,6 @@
 $(function() {
 
+    // Post new freet
     $(document).on("click", "#freet-button", function(e) {
         e.preventDefault();
         var freet = $("#freet-input").val();
@@ -14,6 +15,7 @@ $(function() {
         });
     });
 
+    // Delete a freet
     $(document).on("click", ".delete-button", function(e) {
         var id = $(e.target).attr("freet");
         $.post(
