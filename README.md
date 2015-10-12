@@ -1,6 +1,6 @@
 Fritter
 ==========
 
-Kimberli's Fritter app for 6.170 :smile:
+Kimberli's Fritter app for 6.170 :smile: :yum:
 
 Accessible at [kimberli-freet.herokuapp.com](http://kimberli-freet.herokuapp.com)!
