@@ -3,15 +3,27 @@ body {
   padding: 0;
   font-family: "Lato", sans-serif; }
 
+#container {
+  background-color: #BD1550; }
+
 #home {
+  position: relative;
+  top: -8px;
   width: 600px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px 60px;
+  border: 8px double #BD1550; }
 
 /* Header */
 #header {
+  position: relative;
   text-align: center;
   height: 200px;
-  background-color: #490A3D; }
+  background-color: #490A3D;
+  border-bottom: 1px solid black;
+  box-shadow: 0 4px 12px black;
+  z-index: 50; }
 
 #title {
   font-style: italic;
@@ -76,14 +88,14 @@ body {
   margin: 15px 0;
   text-align: center; }
 
+#freet-input {
+  border: 1px solid #BD1550; }
+
 #freet-button {
   position: relative;
   top: -1px; }
 
 /* Freets */
-#freet-container {
-  margin: 10px; }
-
 .freet-box {
   padding: 10px;
   margin: 4px; }

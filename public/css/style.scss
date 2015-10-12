@@ -10,18 +10,28 @@ body {
     font-family: "Lato", sans-serif;
 }
 #container {
+    background-color: $secondary;
 }
 
 #home {
+    position: relative;
+    top: -8px;
     width: 600px;
     margin: 0 auto;
+    background-color: white;
+    padding: 20px 60px;
+    border: 8px double $secondary;
 }
 
 /* Header */
 #header {
+    position: relative;
     text-align: center;
     height: 200px;
     background-color: $primary;
+    border-bottom: 1px solid black;
+    box-shadow: 0 4px 12px black;
+    z-index: 50;
 }
 #title {
     font-style: italic;
@@ -88,6 +98,9 @@ body {
     margin: 15px 0;
     text-align: center;
 }
+#freet-input {
+    border: 1px solid $secondary;
+}
 #freet-button {
     position: relative;
     top: -1px;
@@ -95,7 +108,6 @@ body {
 
 /* Freets */
 #freet-container {
-    margin: 10px;
 }
 .freet-box {
     padding: 10px;
