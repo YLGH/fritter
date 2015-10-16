@@ -9,7 +9,7 @@ var userSchema = new mongoose.Schema({
 });
 
 /**
- * Find a user by username
+ * Find a user by username, error if not found
  *
  * @param username {string} - username to check
  * @param callback {function} - function to call with error and result
@@ -18,7 +18,7 @@ userSchema.statics.findByUsername = function(rawUsername, callback) {
     var username = rawUsername.toLowerCase();
     this.find({ username: username }, function(err, result) {
         if (err) callback(err);
-        else if (result.length > 0) callback(null, {username: username});
+        else if (result.length > 0) callback(null, {username: username, _id: result[0]._id});
         else callback("User not found");
     });
 }

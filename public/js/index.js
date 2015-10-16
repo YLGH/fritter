@@ -12,7 +12,7 @@ var loadPage = function(data) {
     $.get('/freets', function(response) {
         (response.content).forEach(function(f) {
             f.ts = moment(f.ts).fromNow();
-            if (currentUser === f._user) {
+            if (currentUser === f.author) {
                 f["ownership"] = true;
             }
         });

@@ -5,26 +5,29 @@ var User = require('./User');
 var freetSchema = new mongoose.Schema({
     text: String,
     ts: String, 
-    author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+    author: String,
+    authorId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 /**
  * Add a freet to the store; must have valid username
  *
- * @param username {string} - username of freet author
- * @param freet {string} - freet text
+ * @param rawUsername {string} - username of freet author
+ * @param freetText {string} - freet text
  * @param timestamp {object} - moment defining timestamp of freet
  * @param callback {function} - function to be called with err and result
  */
-freetSchema.statics.addFreet = function(username, freet, timestamp, callback) {
+freetSchema.statics.addFreet = function(rawUsername, freetText, timestamp, callback) {
+    var username = rawUsername.toLowerCase();
     User.findByUsername(username, function(err, result) {
         if (err) {
             callback("Invalid username");
         } else {
             var freet = new Freet({
-                text: freet,
+                text: freetText,
                 ts: timestamp,
-                author: result
+                author: result.username,
+                authorId: result._id
             });
             freet.save(callback);
         }

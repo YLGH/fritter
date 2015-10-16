@@ -14,7 +14,7 @@
     {{#each freets}}
       <div id={{this._id}} class="freet-box">
         {{#if this.ownership}}<button freet={{this._id}} class="delete-button no-border">X</button>{{/if}}
-        <div class="freet-user">@{{this._user}} </div>
+        <div class="freet-user">@{{this.author}} </div>
         <em class="freet-time">({{this.ts}})</em> - <p class="freet-text">{{this.text}}</p>
       </div>
     {{/each}}

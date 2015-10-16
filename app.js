@@ -67,6 +67,7 @@ app.use(function(req, res, next) {
 // Development error handler, prints stacktraces
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    console.log(err);
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,

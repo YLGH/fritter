@@ -24,7 +24,7 @@ templates['home'] = template({"1":function(container,depth0,helpers,partials,dat
     + " class=\"freet-box\">\n        "
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.ownership : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n        <div class=\"freet-user\">@"
-    + alias2(alias1((depth0 != null ? depth0._user : depth0), depth0))
+    + alias2(alias1((depth0 != null ? depth0.author : depth0), depth0))
     + " </div>\n        <em class=\"freet-time\">("
     + alias2(alias1((depth0 != null ? depth0.ts : depth0), depth0))
     + ")</em> - <p class=\"freet-text\">"
