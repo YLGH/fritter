@@ -43,6 +43,7 @@ app.use(function(req, res, next) {
         if (user) {
           req.currentUser = user;
         } else {
+          req.currentUser = undefined;
           req.session.destroy();
         }
         next();

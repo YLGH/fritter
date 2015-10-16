@@ -19,7 +19,7 @@ var freetSchema = new mongoose.Schema({
  * @param callback {function} - function to be called with err and result
  */
 freetSchema.statics.addFreet = function(rawUsername, freetText, timestamp, callback) {
-    if (rawUsername) {
+    if (rawUsername && freetText.length > 0) {
         var username = rawUsername.toLowerCase();
         User.findByUsername(username, function(err, result) {
             if (err) {
@@ -35,7 +35,7 @@ freetSchema.statics.addFreet = function(rawUsername, freetText, timestamp, callb
                 freet.save(callback);
             }
         });
-    } else callback("Invalid username")
+    } else callback("Invalid freet")
 }
 
 /**
@@ -89,6 +89,28 @@ freetSchema.statics.getFreetById = function(id, callback) {
         else callback("Freet not found");
     });
 }
+
+/**
+ * Get freets matching username(s)
+ *
+ * @param rawUsername {string} - username of current user
+ * @param authors {object} - usernames to match; must be all lowercase
+ * @param callback {function} - function to be called with err and result
+ */
+freetSchema.statics.getFreetsByAuthor = function(rawUsername, authors, callback) {
+    if (rawUsername) {
+        var username = rawUsername.toLowerCase();
+        this.find({author: {$in: authors}}, function(err, freets) {
+            if (err) callback(err);
+            else {
+                User.findByUsername(username, function(err, result) {
+                    if (err) callback(null, []);
+                    else callback(null, freets)
+                });
+            }
+        });
+    } else callback(null, []);
+};
 
 /**
  * Get all freets

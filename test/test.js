@@ -228,6 +228,53 @@ describe("Freet", function() {
         });
     });
 
+    //test getFreetsByAuthor
+    describe("#getFreetsByAuthor", function () {
+        // test getting all the freets for one user
+        it("should return one user's freets", function (done) {
+            Freet.addFreet("123", "hello world1", moment(), function() {
+                Freet.addFreet("123", "hello world2", moment(), function() {
+                    Freet.addFreet("456", "hewefllo world2", moment(), function() {
+                        Freet.getFreetsByAuthor("456", "123", function(err, result) {
+                            assert.deepEqual(err, null);
+                            assert.deepEqual(result.length,2);
+                            assert.deepEqual(result[0].author,"123");
+                            assert.deepEqual(result[0].text,"hello world1");
+                            assert.deepEqual(result[1].author,"123");
+                            assert.deepEqual(result[1].text,"hello world2");
+                            Freet.clearFreets();
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+
+        // test getting all the freets for multiple users
+        it("should return multiple user's freets", function (done) {
+            Freet.addFreet("123", "hello world1", moment(), function() {
+                Freet.addFreet("456", "hello world2", moment(), function() {
+                    Freet.addFreet("456", "hewefllo world2", moment(), function() {
+                        Freet.addFreet("456", "hi", moment(), function() {
+                            Freet.addFreet("kim", "boohoo", moment(), function() {
+                                Freet.getFreetsByAuthor("456", ["123","456"], function(err, result) {
+                                    assert.deepEqual(err, null);
+                                    assert.deepEqual(result.length,4);
+                                    assert.deepEqual(result[0].author,"123");
+                                    assert.deepEqual(result[0].text,"hello world1");
+                                    assert.deepEqual(result[1].author,"456");
+                                    assert.deepEqual(result[1].text,"hello world2");
+                                    Freet.clearFreets();
+                                    done();
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
     //test getFreets
     describe("#getFreets", function () {
         // test getting all the freets
