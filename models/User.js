@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
 
 var userSchema = new mongoose.Schema({
     username: String,
@@ -26,9 +27,9 @@ userSchema.statics.findByUsername = function(username, callback) {
  */
 userSchema.statics.authUser = function(username, password, callback) {
     var user = []
-    this.find({username: username, password: password}, function(err,result) {
+    this.find({username: username}, function(err,result) {
         if (err) callback(err);
-        if (result) callback(null, result);
+        if (bcrypt.compareSync(password, result.password)) callback(null, {username: username});
         else callback("User not found");
     });
 }
@@ -41,11 +42,17 @@ userSchema.statics.authUser = function(username, password, callback) {
  * @param callback {function} - function to call with error and result
  */
 userSchema.statics.createUser = function(username, password, callback) {
-    var user = new User({
-        username: username,
-        password: password
-    });
-    user.save(callback);
+    if (username && password) {
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hash(password, salt);
+        var user = new User({
+            username: username,
+            password: hash
+        });
+        user.save(callback);
+    } else {
+        callback("Invalid username/password");
+    }
 }
 
 var User = mongoose.model('User', userSchema);
