@@ -28,7 +28,7 @@ var isValidUserReq = function(req, res) {
  */
 router.post('/login', function(req, res) {
     if (isValidUserReq(req, res)) {
-        User.authUser(req.body.username, function(err,result) {
+        User.authUser(req.body.username, req.body.password, function(err,result) {
             if (err) {
                 utils.sendErrResponse(res, 403, err);
             } else {
@@ -66,12 +66,12 @@ router.post('/logout', function(req, res) {
  */
 router.post('/create', function(req, res) {
     if (isValidUserReq(req, res)) {
-        User.createUser(req.body.username, function(err,result) {
+        User.createUser(req.body.username, req.body.password, function(err,result) {
             if (err) {
                 utils.sendErrResponse(res, 403, err);
             } else {
                 req.session.username = req.body.username;
-                utils.sendSuccessResponse(res, { user : req.body.username });
+                utils.sendSuccessResponse(res, { user : result.username });
             }
         });
     }

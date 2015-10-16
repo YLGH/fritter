@@ -14,8 +14,13 @@ var userSchema = new mongoose.Schema({
  * @param username {string} - username to check
  * @param callback {function} - function to call with error and result
  */
-userSchema.statics.findByUsername = function(username, callback) {
-    this.find({ username: username }, callback);
+userSchema.statics.findByUsername = function(rawUsername, callback) {
+    var username = rawUsername.toLowerCase();
+    this.find({ username: username }, function(err, result) {
+        if (err) callback(err);
+        else if (result.length > 0) callback(null, {username: username});
+        else callback("User not found");
+    });
 }
 
 /**
@@ -25,12 +30,14 @@ userSchema.statics.findByUsername = function(username, callback) {
  * @param password {string} - password to check
  * @param callback {function} - function to call with error and result
  */
-userSchema.statics.authUser = function(username, password, callback) {
-    var user = []
+userSchema.statics.authUser = function(rawUsername, password, callback) {
+    var username = rawUsername.toLowerCase();
     this.find({username: username}, function(err,result) {
         if (err) callback(err);
-        if (bcrypt.compareSync(password, result.password)) callback(null, {username: username});
-        else callback("User not found");
+        else if (result.length > 0) {
+            if (bcrypt.compareSync(password, result[0].password)) callback(null, {username: username});
+            else callback("Incorrect login");
+        } else callback("Incorrect login");
     });
 }
 
@@ -41,15 +48,25 @@ userSchema.statics.authUser = function(username, password, callback) {
  * @param password {string} - password
  * @param callback {function} - function to call with error and result
  */
-userSchema.statics.createUser = function(username, password, callback) {
-    if (username && password) {
-        var salt = bcrypt.genSaltSync(10);
-        var hash = bcrypt.hash(password, salt);
-        var user = new User({
-            username: username,
-            password: hash
+userSchema.statics.createUser = function(rawUsername, password, callback) {
+    var username = rawUsername.toLowerCase();
+    if (username.match("^[a-z0-9_-]{3,16}$") && typeof password === 'string') {
+        this.find({username: username}, function(err, result) {
+            if (err) callback(err);
+            else if (result.length === 0) {
+                var salt = bcrypt.genSaltSync(10);
+                var hash = bcrypt.hashSync(password, salt);
+                var user = new User({
+                    username: username,
+                    password: hash
+                });
+                user.save(function(err,result) {
+                    // console.log(err);
+                    if (err) callback(err);
+                    else callback(null, {username: username});
+                });
+            } else callback("User already exists");
         });
-        user.save(callback);
     } else {
         callback("Invalid username/password");
     }

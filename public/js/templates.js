@@ -44,9 +44,9 @@ templates['home'] = template({"1":function(container,depth0,helpers,partials,dat
     + "  </div>\n</div>";
 },"useData":true});
 templates['login'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "<form id=\"register-form\">\n    <h3>Register for a Fritter account.</h3>\n    <input name=\"username\" type=\"text\" class=\"form-ele input\" placeholder=\"username\">\n    <button id=\"register-button\" class=\"form-ele button\">Register</button>\n</form>\n";
+    return "<form id=\"register-form\">\n    <h3>Register for a Fritter account.</h3>\n    <input name=\"username\" type=\"text\" class=\"form-ele input\" placeholder=\"username\">\n    <input name=\"password\" type=\"password\" class=\"form-ele input\" placeholder=\"password\">\n    <button id=\"register-button\" class=\"form-ele button\">Register</button>\n</form>\n";
 },"3":function(container,depth0,helpers,partials,data) {
-    return "<form id=\"login-form\">\n    <h3>Log in to Fritter.</h3>\n    <input name=\"username\" type=\"text\" class=\"form-ele input\" placeholder=\"username\">\n    <button id=\"login-button\" class=\"form-ele button\">Login</button>\n</form>\n";
+    return "<form id=\"login-form\">\n    <h3>Log in to Fritter.</h3>\n    <input name=\"username\" type=\"text\" class=\"form-ele input\" placeholder=\"username\">\n    <input name=\"password\" type=\"password\" class=\"form-ele input\" placeholder=\"password\">\n    <button id=\"login-button\" class=\"form-ele button\">Login</button>\n</form>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 

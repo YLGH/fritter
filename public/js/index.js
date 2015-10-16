@@ -19,7 +19,6 @@ var loadPage = function(data) {
         data["freets"] = response.content.reverse();
         $('#container').html(Handlebars.templates["home"](data));
         $('#header').html(Handlebars.templates["header"]({currentUser: currentUser}));
-        console.log($('.freet-time'));
     });
 }
 

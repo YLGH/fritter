@@ -21,9 +21,10 @@ $(function() {
     $(document).on("click", "#login-button", function(e) {
         e.preventDefault();
         var username = $("#login-form input[name=username]").val();
+        var password = $("#login-form input[name=password]").val();
         $.post(
             '/users/login',
-            { username: username }
+            { username: username, password: password }
         ).done(function(response) {
             currentUser = response.content.user;
             helpers.hidePopup();
@@ -38,9 +39,10 @@ $(function() {
     $(document).on("click", "#register-button", function(e) {
         e.preventDefault();
         var username = $("#register-form input[name=username]").val();
+        var password = $("#register-form input[name=password]").val();
         $.post(
             '/users/create',
-            { username: username }
+            { username: username, password: password }
         ).done(function(response) {
             currentUser = response.content.user;
             helpers.hidePopup();

@@ -40,7 +40,7 @@ freetSchema.statics.addFreet = function(username, freet, timestamp, callback) {
 freetSchema.statics.getFreetById = function(id, callback) {
     this.find({_id: id}, function(err, result) {
         if (err) callback(err);
-        if (result) callback(null, result);
+        else if (result.length > 0) callback(null, result);
         else callback("Freet not found");
     });
 }
@@ -53,7 +53,7 @@ freetSchema.statics.getFreetById = function(id, callback) {
 freetSchema.statics.getFreets = function(callback) {
     this.find({}, function(err,result) {
         if (err) callback(err);
-        callback(null, result);
+        else callback(null, result);
     })
 };
 
