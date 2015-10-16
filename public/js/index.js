@@ -9,6 +9,11 @@ currentUser = undefined;
 // Load the main page with the appropriate data
 var loadPage = function(data) {
     data = data || {currentUser: currentUser};
+    if (!currentUser) {
+        data.notLoggedIn = true;
+    } else {
+        data.notLoggedIn = false;
+    }
     $.get('/freets', function(response) {
         (response.content).forEach(function(f) {
             f.ts = moment(f.ts).fromNow();

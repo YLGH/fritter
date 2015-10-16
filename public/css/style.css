@@ -124,7 +124,8 @@ body {
   background-color: transparent; }
 
 .error {
-  color: #E97F02; }
+  color: #E97F02;
+  text-align: center; }
 
 .input {
   font-size: 150%;

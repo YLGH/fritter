@@ -15,14 +15,16 @@ templates['header'] = template({"1":function(container,depth0,helpers,partials,d
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.currentUser : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "");
 },"useData":true});
 templates['home'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "    <div id=\"new-freet-box\">\n      <form id=\"freet-form\">\n        <input id=\"freet-input\" class=\"input\" type=\"text\" maxlength=\"160\">\n        <button id=\"freet-button\" class=\"button\" type=\"submit\">Freet!</button>\n      </form>\n    </div>\n";
+    return "        Log in or register to view freets!\n";
 },"3":function(container,depth0,helpers,partials,data) {
+    return "    <div id=\"new-freet-box\">\n      <form id=\"freet-form\">\n        <input id=\"freet-input\" class=\"input\" type=\"text\" maxlength=\"160\">\n        <button id=\"freet-button\" class=\"button\" type=\"submit\">Freet!</button>\n      </form>\n    </div>\n";
+},"5":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
   return "      <div id="
     + alias2(alias1((depth0 != null ? depth0._id : depth0), depth0))
     + " class=\"freet-box\">\n        "
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.ownership : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.ownership : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n        <div class=\"freet-user\">@"
     + alias2(alias1((depth0 != null ? depth0.author : depth0), depth0))
     + " </div>\n        <em class=\"freet-time\">("
@@ -30,17 +32,19 @@ templates['home'] = template({"1":function(container,depth0,helpers,partials,dat
     + ")</em> - <p class=\"freet-text\">"
     + alias2(alias1((depth0 != null ? depth0.text : depth0), depth0))
     + "</p>\n      </div>\n";
-},"4":function(container,depth0,helpers,partials,data) {
+},"6":function(container,depth0,helpers,partials,data) {
     return "<button freet="
     + container.escapeExpression(container.lambda((depth0 != null ? depth0._id : depth0), depth0))
     + " class=\"delete-button no-border\">X</button>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 
-  return "<div id=\"home\">\n  <div id=\"user\">\n    <div id=\"freet-error\" class=\"error\"></div>\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.currentUser : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+  return "<div id=\"home\">\n  <div id=\"user\">\n    <div id=\"freet-error\" class=\"error\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.notLoggedIn : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </div>\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.currentUser : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "  </div>\n  <div id=\"freet-container\">\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.freets : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.freets : depth0),{"name":"each","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "  </div>\n</div>";
 },"useData":true});
 templates['login'] = template({"1":function(container,depth0,helpers,partials,data) {

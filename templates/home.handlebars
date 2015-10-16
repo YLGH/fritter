@@ -1,6 +1,10 @@
 <div id="home">
   <div id="user">
-    <div id="freet-error" class="error"></div>
+    <div id="freet-error" class="error">
+      {{#if notLoggedIn}}
+        Log in or register to view freets!
+      {{/if}}
+    </div>
     {{#if currentUser}}
     <div id="new-freet-box">
       <form id="freet-form">

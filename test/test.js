@@ -194,7 +194,7 @@ describe("Freet", function() {
         it("should return all freets", function (done) {
             Freet.addFreet("123", "hello world1", Date.now(), function() {
                 Freet.addFreet("456", "hello world2", Date.now(), function() {
-                    Freet.getFreets(function(err, result) {
+                    Freet.getFreets("123", function(err, result) {
                         assert.deepEqual(err, null);
                         assert.deepEqual(result.length,2);
                         assert.deepEqual(result[0].author,"123");
@@ -216,9 +216,9 @@ describe("Freet", function() {
             var id;
             Freet.addFreet("kim", "hello 32world", Date.now(), function(err, result) {
                 id = result.id;
-                Freet.getFreets(function(err1, result1) {                    
+                Freet.getFreets("kim", function(err1, result1) {                    
                     Freet.deleteFreetById("Kim", id, function(err2, result2) {
-                        Freet.getFreets(function(err, result3) {
+                        Freet.getFreets("kim", function(err, result3) {
                             assert.deepEqual(result1.length,2);
                             assert.deepEqual(err2, null);
                             assert.deepEqual(result3.length,0);

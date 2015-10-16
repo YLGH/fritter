@@ -17,20 +17,22 @@ var freetSchema = new mongoose.Schema({
  * @param callback {function} - function to be called with err and result
  */
 freetSchema.statics.addFreet = function(rawUsername, freetText, timestamp, callback) {
-    var username = rawUsername.toLowerCase();
-    User.findByUsername(username, function(err, result) {
-        if (err) {
-            callback("Invalid username");
-        } else {
-            var freet = new Freet({
-                text: freetText,
-                ts: timestamp,
-                author: result.username,
-                authorId: result._id
-            });
-            freet.save(callback);
-        }
-    });
+    if (rawUsername) {
+        var username = rawUsername.toLowerCase();
+        User.findByUsername(username, function(err, result) {
+            if (err) {
+                callback("Invalid username");
+            } else {
+                var freet = new Freet({
+                    text: freetText,
+                    ts: timestamp,
+                    author: result.username,
+                    authorId: result._id
+                });
+                freet.save(callback);
+            }
+        });
+    } else callback("Invalid username")
 }
 
 /**
@@ -50,13 +52,22 @@ freetSchema.statics.getFreetById = function(id, callback) {
 /**
  * Get all freets
  *
+ * @param rawUsername {string} - username of current user
  * @param callback {function} - function to be called with err and result
  */
-freetSchema.statics.getFreets = function(callback) {
-    this.find({}, function(err,result) {
-        if (err) callback(err);
-        else callback(null, result);
-    })
+freetSchema.statics.getFreets = function(rawUsername, callback) {
+    if (rawUsername) {
+        var username = rawUsername.toLowerCase();
+        this.find({}, function(err, freets) {
+            if (err) callback(err);
+            else {
+                User.findByUsername(username, function(err, result) {
+                    if (err) callback(null, []);
+                    else callback(null, freets)
+                });
+            }
+        });
+    } else callback(null, []);
 };
 
 /**
@@ -67,12 +78,14 @@ freetSchema.statics.getFreets = function(callback) {
  * @param callback {function} - function to be called with err and result
  */
 freetSchema.statics.deleteFreetById = function(rawUsername, id, callback) {
-    var username = rawUsername.toLowerCase();
-    this.remove({author: username, _id: id}, function(err, result) {
-        if (err) callback(err);
-        else if (result.result.n === 0) callback("Deletion failed");
-        else callback(null);
-    });
+    if (rawUsername) {
+        var username = rawUsername.toLowerCase();
+        this.remove({author: username, _id: id}, function(err, result) {
+            if (err) callback(err);
+            else if (result.result.n === 0) callback("Deletion failed");
+            else callback(null);
+        });
+    } else callback("Invalid username");
 }
 
 /**

@@ -12,9 +12,13 @@ var Freet = require('../models/Freet');
     - content: on success, a list of all freet objects
  */
 router.get('/', function(req, res) {
-    Freet.getFreets(function(err,result) {
-        utils.sendSuccessResponse(res, result);
-    });
+  var username = undefined;
+  if (req.currentUser) {
+    username = req.currentUser.username;
+  }
+  Freet.getFreets(username, function(err,result) {
+      utils.sendSuccessResponse(res, result);
+  });
 });
 
 /*
