@@ -19,6 +19,6 @@
   },
   "scripts": {
     "start": "node ./bin/www",
-    "startdev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www"
   }
 }

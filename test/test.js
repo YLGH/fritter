@@ -1,29 +1,43 @@
 var assert = require("assert");
 var mongoose = require("mongoose");
+var moment = require("moment");
 var User = require("../models/User");
 var Freet = require("../models/Freet");
 
-// mongoose.connect('mongodb://localhost/model_test');  
+mongoose.connect('mongodb://localhost/model_test');
+User.clearUsers();
+User.createUser("kim", "pass123", function() {});
+User.createUser("123", "pass", function(){});
+User.createUser("456", "pa1242412ss2", function(){});
 
 // test user model
 describe("User", function() {
 
-    User.createUser("kim", "pass123", function() {});
-
     //test findByUsername
-    describe("#findByUsername", function () {
+    describe("#findByUsername", function (done) {
         // test nonexistent user
         it("should return error when user does not exist", function () {
             User.findByUsername("hello", function(err, result) {
                 assert.notDeepEqual(err, null);
+                done();
             });
         });
 
         // test created user
-        it("should return username when user exists", function () {
+        it("should return username when user exists", function (done) {
+            User.findByUsername("kim", function(err, result) {
+                assert.deepEqual(err, null);
+                assert.deepEqual(result.username, "kim");
+                done();
+            });
+        });
+
+        // test created user capitalized
+        it("should return username when user exists even if capitalized", function (done) {
             User.findByUsername("Kim", function(err, result) {
                 assert.deepEqual(err, null);
-                assert.deepEqual(result, {username: "kim"});
+                assert.deepEqual(result.username, "kim");
+                done();
             });
         });
 
@@ -33,23 +47,34 @@ describe("User", function() {
     describe("#authUser", function () {
 
         // test nonexistent user
-        it("should return error when user does not exist", function () {
+        it("should return error when user does not exist", function (done) {
             User.authUser("hello", "hoo", function(err, result) {
                 assert.notDeepEqual(err, null);
+                done();
+            });
+        });
+
+        // test incorrect pass
+        it("should return error when incorrect password", function (done) {
+            User.authUser("kim", "pass", function(err, result) {
+                assert.notDeepEqual(err, null);
+                done();
             });
         });
 
         // test existing user
-        it("should not return error when user exists", function () {
+        it("should not return error when user exists", function (done) {
             User.authUser("kim", "pass123", function(err, result) {
                 assert.deepEqual(err, null);
+                done();
             });
         });
 
         // test existing user different capitalization
-        it("should not return error when user exists with different capitalization", function () {
+        it("should not return error when user exists with different capitalization", function (done) {
             User.authUser("Kim", "pass123", function(err, result) {
                 assert.deepEqual(err, null);
+                done();
             });
         });
 
@@ -58,48 +83,52 @@ describe("User", function() {
     //test createUser
     describe("#createUser", function () {
         // test nonexistent user
-        it("should return error when user exists", function () {
-            User.createUser("bob", "pass", function() {});
-            User.createUser("bob", "pass", function(err, result) {
-                console.log(err, err!==null, result); ///helpppp
-                assert.strictEqual(err, "hello");
+        it("should return error when user exists", function (done) {
+            User.createUser("kim", "pass", function(err, result) {
+                assert.notDeepEqual(err, null);
+                done();
             });
         });
 
         // test username min length
-        it("should return error when username too short", function () {
+        it("should return error when username too short", function (done) {
             User.createUser("ki", "pass", function(err, result) {
                 assert.notDeepEqual(err, null);
+                done();
             });
         });
 
         // test username max length
-        it("should return error when username too long", function () {
+        it("should return error when username too long", function (done) {
             User.createUser("kewfewfweewfefwgi", "pass", function(err, result) {
                 assert.notDeepEqual(err, null);
+                done();
             });
         });
 
         // test username invalid characters
-        it("should return error when username has invalid chars", function () {
+        it("should return error when username has invalid chars", function (done) {
             User.createUser("hi<>mi", "pass", function(err, result) {
                 assert.notDeepEqual(err, null);
+                done();
             });
         });
 
         // test new user
-        it("should not return error when user does not exist", function () {
+        it("should not return error when user does not exist", function (done) {
             User.createUser("eek", "pass", function(err, result) {
                 assert.deepEqual(err, null);
                 assert.deepEqual(result, {username: "eek"});
+                done();
             });
         });
 
         // test new user capitalized
-        it("should not return error when username capitalized", function () {
+        it("should not return error when username capitalized", function (done) {
             User.createUser("Blah", "pass", function(err, result) {
                 assert.deepEqual(err, null);
                 assert.deepEqual(result, {username: "blah"});
+                done();
             });
         });
     });
@@ -112,30 +141,23 @@ describe("Freet", function() {
     //test addFreet
     describe("#addFreet", function () {
 
-        // test undefined user
-        it("should return error when invalid username", function () {
-            Freet.addFreet(undefined, "hello", Date.now(), function(err, result) {
-                assert.notDeepEqual(err, null);
-            });
-            Freet.clearFreets();
-        });
-
         // test nonexistent user
-        it("should fail when has a nonexistent user", function () {
+        it("should fail when has a nonexistent user", function (done) {
             Freet.addFreet("djax", "hello world", Date.now(), function(err, result) {
                 assert.notDeepEqual(err, null);
+                Freet.clearFreets();
+                done();
             });
-            Freet.clearFreets();
         });
 
         // test valid freet
-        it("should succeed when has a valid username", function () {
-            User.createUser("boo", "pass", function(){});
-            Freet.addFreet("Boo", "hello world", Date.now(), function(err, result) {
+        it("should succeed when has a valid username", function (done) {
+            Freet.addFreet("Kim", "hello world", Date.now(), function(err, result) {
                 assert.deepEqual(err, null);
-                assert.notDeepEqual(result, {id: undefined});
+                assert.notDeepEqual(result._id, undefined);
+                Freet.clearFreets();
+                done();
             });
-            Freet.clearFreets();
         });
 
     });
@@ -144,82 +166,90 @@ describe("Freet", function() {
     describe("#getFreetById", function () {
 
         // test invalid freet id
-        it("should fail when invalid id", function () {
+        it("should fail when invalid id", function (done) {
             Freet.getFreetById("fakeId", function(err, result) {
                 assert.notDeepEqual(err, null);
+                done();
             });
         });
 
         // test valid freet
-        it("should succeed when valid id", function () {
+        it("should succeed when valid id", function (done) {
             var id;
-            User.createUser("test2test", "pass", function(){});
-            Freet.addFreet("test2test", "hello world", Date.now(), function(err, result) {
-                id = result.id;
+            Freet.addFreet("kim", "hello world", moment(), function(err, result) {
+                id = result._id;
+                Freet.getFreetById(id, function(err, result) {
+                    assert.deepEqual(err, null);
+                    assert.deepEqual(result.text, "hello world")
+                    Freet.clearFreets();
+                    done();
+                });
             });
-            Freet.getFreetById(id, function(err, result) {
-                assert.deepEqual(err, null);
-                assert.deepEqual(result.text, "hello world")
-            });
-            Freet.clearFreets();
         });
     });
 
     //test getFreets
     describe("#getFreets", function () {
         // test getting all the freets
-        it("should return all freets", function () {
-            User.createUser("123", "pass", function(){});
-            User.createUser("456", "pass", function(){});
-            Freet.addFreet("123", "hello world1", Date.now(), function() {});
-            Freet.addFreet("456", "hello world2", Date.now(), function() {});
-            Freet.getFreets(function(err, result) {
-                assert.deepEqual(err, null);
-                assert.deepEqual(result.length,2);
-                assert.deepEqual(result[0]._user,"123");
-                assert.deepEqual(result[0].text,"hello world1");
-                assert.deepEqual(result[1]._user,"456");
-                assert.deepEqual(result[1].text,"hello world2");
+        it("should return all freets", function (done) {
+            Freet.addFreet("123", "hello world1", Date.now(), function() {
+                Freet.addFreet("456", "hello world2", Date.now(), function() {
+                    Freet.getFreets(function(err, result) {
+                        assert.deepEqual(err, null);
+                        assert.deepEqual(result.length,2);
+                        assert.deepEqual(result[0].author,"123");
+                        assert.deepEqual(result[0].text,"hello world1");
+                        assert.deepEqual(result[1].author,"456");
+                        assert.deepEqual(result[1].text,"hello world2");
+                        Freet.clearFreets();
+                        done();
+                    });
+                });
             });
-            Freet.clearFreets();
         });
     });
 
     //test deleteFreetById
-    describe("#deleteFreetById", function () {
+    describe("#deleteFreetById", function (done) {
         // test delete freet authorized user
         it("should succeed when valid id and authorized user", function () {
             var id;
-            User.createUser("user1", "pass", function(){});
-            Freet.addFreet("user1", "hello world", Date.now(), function(err, result) {
+            Freet.addFreet("kim", "hello 32world", Date.now(), function(err, result) {
                 id = result.id;
+                Freet.getFreets(function(err1, result1) {                    
+                    Freet.deleteFreetById("Kim", id, function(err2, result2) {
+                        Freet.getFreets(function(err, result3) {
+                            assert.deepEqual(result1.length,2);
+                            assert.deepEqual(err2, null);
+                            assert.deepEqual(result2[0]._id, id);
+                            assert.deepEqual(result3.length,0);
+                            Freet.clearFreets();
+                            done();
+                        });
+                    });
+                });
             });
-            Freet.deleteFreetById("user1", id, function(err, result) {
-                assert.deepEqual(err, null);
-                assert.deepEqual(result[0]._id, id)
-            });
-            Freet.clearFreets();
         });
 
         // test delete freet unauthorized user
-        it("should fail when valid id and unauthorized user", function () {
+        it("should fail when valid id and unauthorized user", function (done) {
             var id;
-            User.createUser("user1", "pass", function(){});
-            Freet.addFreet("user1", "hello world", Date.now(), function(err, result) {
+            Freet.addFreet("123", "hello world", Date.now(), function(err, result) {
                 id = result.id;
+                Freet.deleteFreetById("456", id, function(err, result) {
+                    assert.notDeepEqual(err, null);
+                    Freet.clearFreets();
+                    done();
+                });
             });
-            Freet.deleteFreetById("user2", id, function(err, result) {
-                assert.notDeepEqual(err, null);
-            });
-            Freet.clearFreets();
         });
 
         // test delete freet invalid id
-        it("should fail when invalid id", function () {
-            User.createUser("user1", "pass", function(){});
-            Freet.addFreet("user1", "hello world", Date.now(), function(){});
-            Freet.deleteFreetById("user1", "fakeId", function(err, result) {
+        it("should fail when invalid id", function (done) {
+            Freet.addFreet("kim", "hello world", Date.now(), function(){});
+            Freet.deleteFreetById("kim", "fakeId", function(err, result) {
                 assert.notDeepEqual(err, null);
+                done();
             });
             Freet.clearFreets();
         });

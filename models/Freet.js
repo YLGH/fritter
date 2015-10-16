@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var User = require('./User');
 
-
 var freetSchema = new mongoose.Schema({
     text: String,
     ts: String, 
@@ -43,7 +42,7 @@ freetSchema.statics.addFreet = function(rawUsername, freetText, timestamp, callb
 freetSchema.statics.getFreetById = function(id, callback) {
     this.find({_id: id}, function(err, result) {
         if (err) callback(err);
-        else if (result.length > 0) callback(null, result);
+        else if (result.length > 0) callback(null, result[0]);
         else callback("Freet not found");
     });
 }
@@ -68,7 +67,12 @@ freetSchema.statics.getFreets = function(callback) {
  * @param callback {function} - function to be called with err and result
  */
 freetSchema.statics.deleteFreetById = function(username, id, callback) {
-    this.remove({author: username, _id: id}, callback);
+    this.find({author: username, _id: id}, function(err, result) {
+        console.log(result);
+        if (err) callback(err);
+        else if (result.length === 0) callback("Freet not found/authorized");
+        else callback(null, result);
+    }).remove();
 }
 
 /**

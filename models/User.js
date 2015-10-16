@@ -72,6 +72,13 @@ userSchema.statics.createUser = function(rawUsername, password, callback) {
     }
 }
 
+/**
+ * Clear all users
+ */
+userSchema.statics.clearUsers = function() {
+    this.remove({}, function() {});
+}
+
 var User = mongoose.model('User', userSchema);
 
 module.exports = User;
