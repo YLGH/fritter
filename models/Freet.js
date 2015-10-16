@@ -1,104 +1,80 @@
-var uuid = require('node-uuid');
-var User = require('./User.js');
-var _store = [];
+var mongoose = require('mongoose');
+var User = require('./User');
+
+
+var freetSchema = new mongoose.Schema({
+    text: String,
+    ts: String, 
+    author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+});
 
 /**
- * Freet model - describes a freet object
+ * Add a freet to the store; must have valid username
+ *
+ * @param username {string} - username of freet author
+ * @param freet {string} - freet text
+ * @param timestamp {object} - moment defining timestamp of freet
+ * @param callback {function} - function to be called with err and result
  */
-var Freet = (function Freet(_store) {
-    var that = Object.create(Freet.prototype);
-
-    /**
-     * Get a single freet by ID
-     *
-     * @param id {string} - uuid of the freet
-     * @return - a matching tweet or undefined if not found
-     */
-    var getFreet = function(id) {
-        return _store.filter(function(f) {
-            return f._id === id;
-        })[0];
-    }
-
-    /**
-     * Add a freet to the store; must have valid username
-     *
-     * @param username {string} - username of freet author
-     * @param freet {string} - freet text
-     * @param timestamp {object} - moment defining timestamp of freet
-     * @param callback {function} - function to be called with err and result
-     */
-    that.addFreet = function (username, freet, timestamp, callback) {
-        User.findByUsername(username, function(err, result) {
-            if (err) {
-                callback("Invalid username");
-            } else {
-                freetObj = {
-                    text: freet,
-                    ts: timestamp,
-                    _user: username.toLowerCase(),
-                    _id: uuid.v4()
-                };
-                 _store.push(freetObj);
-                callback(null, {id: freetObj._id})
-            }
-        });
-    };
-
-    /**
-     * Get a freet by ID
-     *
-     * @param id {string} - uuid of freet
-     * @param callback {function} - function to be called with err and result
-     */
-    that.getFreetById = function(id, callback) {
-        var result = getFreet(id);
-        if (result) {
-            callback(null, result);
+freetSchema.statics.addFreet = function(username, freet, timestamp, callback) {
+    User.findByUsername(username, function(err, result) {
+        if (err) {
+            callback("Invalid username");
         } else {
-            callback("Freet not found");
+            var freet = new Freet({
+                text: freet,
+                ts: timestamp,
+                author: result
+            });
+            freet.save(callback);
         }
-    }
+    });
+}
 
-    /**
-     * Get all freets
-     *
-     * @param callback {function} - function to be called with err and result
-     */
-    that.getFreets = function(callback) {
-        callback(null, _store);
-    };
+/**
+ * Get a freet by ID
+ *
+ * @param id {string} - uuid of freet
+ * @param callback {function} - function to be called with err and result
+ */
+freetSchema.statics.getFreetById = function(id, callback) {
+    this.find({_id: id}, function(err, result) {
+        if (err) callback(err);
+        if (result) callback(null, result);
+        else callback("Freet not found");
+    });
+}
 
-    /**
-     * Delete freet by ID
-     *
-     * @param username {string} - username of user initiating delete; must match freet author
-     * @param id {string} - freet uuid
-     * @param callback {function} - function to be called with err and result
-     */
-    that.deleteFreetById = function(username, id, callback) {
-        var freet = getFreet(id);
-        if (freet) {
-            if (freet._user === username) {
-                callback(null, _store.splice(_store.indexOf(freet),1));
-            } else {
-                callback("Not authorized to delete freet");
-            }
-        } else {
-            callback("Freet not found");
-        }
-    }
+/**
+ * Get all freets
+ *
+ * @param callback {function} - function to be called with err and result
+ */
+freetSchema.statics.getFreets = function(callback) {
+    this.find({}, function(err,result) {
+        if (err) callback(err);
+        callback(null, result);
+    })
+};
 
-    /**
-     * Clear all freets
-     */
-    that.clearFreets = function() {
-        _store = [];
-    }
+/**
+ * Delete freet by ID
+ *
+ * @param username {string} - username of user initiating delete; must match freet author
+ * @param id {string} - freet uuid
+ * @param callback {function} - function to be called with err and result
+ */
+freetSchema.statics.deleteFreetById = function(username, id, callback) {
+    this.remove({author: username, _id: id}, callback);
+}
 
-    Object.freeze(that);
-    return that;
+/**
+ * Clear all freets
+ */
+freetSchema.statics.clearFreets = function() {
+    this.remove({}, function() {});
+}
 
-})(_store);
+var Freet = mongoose.model('Freet', freetSchema);
 
 module.exports = Freet;

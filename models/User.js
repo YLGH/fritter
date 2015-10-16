@@ -1,75 +1,53 @@
-var _users = [];
+var mongoose = require('mongoose');
+
+var userSchema = new mongoose.Schema({
+    username: String,
+    password: String, 
+    follows: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'} ],
+    freets: [{type: mongoose.Schema.Types.ObjectId, ref: 'Freet'} ]
+});
 
 /**
- * User model - describes a user object
+ * Find a user by username
+ *
+ * @param username {string} - username to check
+ * @param callback {function} - function to call with error and result
  */
-var User = (function User(_users) {
-    var that = Object.create(User.prototype);
+userSchema.statics.findByUsername = function(username, callback) {
+    this.find({ username: username }, callback);
+}
 
-    /**
-     * Check if user exists
-     *
-     * @param username {string} - username to check
-     * @return - true if user exists and false otherwise
-     */
-    var userExists = function(username) {
-        return _users.indexOf(username) !== -1;
-    }
+/**
+ * Authenticate a user
+ *
+ * @param username {string} - username to check
+ * @param password {string} - password to check
+ * @param callback {function} - function to call with error and result
+ */
+userSchema.statics.authUser = function(username, password, callback) {
+    var user = []
+    this.find({username: username, password: password}, function(err,result) {
+        if (err) callback(err);
+        if (result) callback(null, result);
+        else callback("User not found");
+    });
+}
 
-    /**
-     * Find a user by username
-     *
-     * @param username {string} - username to check
-     * @param callback {function} - function to call with error and result
-     */
-    that.findByUsername = function(username, callback) {
-        if (username) {
-            username = username.toLowerCase();
-            if (!userExists(username)) {
-                callback("User does not exist");
-            } else {
-                callback(null, {username: username} );
-            }
-        } else {
-            callback("Username undefined");
-        }
-    }
+/**
+ * Create a new user
+ *
+ * @param username {string} - username to create
+ * @param password {string} - password
+ * @param callback {function} - function to call with error and result
+ */
+userSchema.statics.createUser = function(username, password, callback) {
+    var user = new User({
+        username: username,
+        password: password
+    });
+    user.save(callback);
+}
 
-    /**
-     * Authenticate a user
-     *
-     * @param username {string} - username to check
-     * @param callback {function} - function to call with error and result
-     */
-    that.authUser = function(username, callback) {
-        username = username.toLowerCase();
-        if (!userExists(username)) {
-            callback("Invalid login");
-        } else {
-            callback(null);
-        }
-    }
-
-    /**
-     * Create a new user
-     *
-     * @param username {string} - username to create
-     * @param callback {function} - function to call with error and result
-     */
-    that.createUser = function(username, callback) {
-        username = username.toLowerCase();
-        if (userExists(username)) {
-            callback("Username already exists");
-        } else if (!username.match("^[a-z0-9_-]{3,16}$")) {
-            callback("Username should consist of letters, numbers, underscores, and be between 3 and 16 characters long.")
-        } else {
-            _users.push(username);
-            callback(null, {username: username});
-        }
-    };
-
-    Object.freeze(that);
-    return that;
-})(_users);
+var User = mongoose.model('User', userSchema);
 
 module.exports = User;

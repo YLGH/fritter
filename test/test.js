@@ -1,12 +1,14 @@
 var assert = require("assert");
-var User = require("../models/User.js");
-var Freet = require("../models/Freet.js");
+var mongoose = require("mongoose");
+var User = require("../models/User");
+var Freet = require("../models/Freet");
 
+mongoose.connect('mongodb://localhost/model_test');  
 
 // test user model
 describe("User", function() {
 
-    User.createUser("kim", function() {});
+    User.createUser("kim", "pass123", function() {});
 
     //test findByUsername
     describe("#findByUsername", function () {
@@ -32,21 +34,21 @@ describe("User", function() {
 
         // test nonexistent user
         it("should return error when user does not exist", function () {
-            User.authUser("hello", function(err, result) {
+            User.authUser("hello", "hoo", function(err, result) {
                 assert.notDeepEqual(err, null);
             });
         });
 
         // test existing user
         it("should not return error when user exists", function () {
-            User.authUser("kim", function(err, result) {
+            User.authUser("kim", "pass123", function(err, result) {
                 assert.deepEqual(err, null);
             });
         });
 
         // test existing user different capitalization
         it("should not return error when user exists with different capitalization", function () {
-            User.authUser("Kim", function(err, result) {
+            User.authUser("Kim", "pass123", function(err, result) {
                 assert.deepEqual(err, null);
             });
         });

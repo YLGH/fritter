@@ -4,10 +4,19 @@ var express = require('express');
 var session = require('express-session');
 var path = require('path');
 var logger = require('morgan');
+var mongoose = require('mongoose');
 
 var User = require('./models/User');
 
 var app = express();
+
+//database
+var db = mongoose.connection;
+db.on('error', console.error);
+db.once('open', function() {
+  // Create your schemas and models here.
+});
+mongoose.connect( process.env.MONGOLAB_URI || 'mongodb://localhost/fritter');
 
 //route handlers
 var index = require('./routes/index');
