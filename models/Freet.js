@@ -5,6 +5,8 @@ var freetSchema = new mongoose.Schema({
     text: String,
     ts: String, 
     author: String,
+    isRefreet: Boolean,
+    originalAuthor: String,
     authorId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
@@ -27,12 +29,51 @@ freetSchema.statics.addFreet = function(rawUsername, freetText, timestamp, callb
                     text: freetText,
                     ts: timestamp,
                     author: result.username,
-                    authorId: result._id
+                    authorId: result._id,
+                    isRefreet: false
                 });
                 freet.save(callback);
             }
         });
     } else callback("Invalid username")
+}
+
+/**
+ * Add a refreet with valid refreet username
+ *
+ * @param rawUsername {string} - username of refreeter
+ * @param id {string} - freet ID
+ * @param timestamp {object} - moment defining timestamp of freet
+ * @param callback {function} - function to be called with err and result
+ */
+freetSchema.statics.refreet = function(rawUsername, id, timestamp, callback) {
+    this.find({_id: id}, function(err, result) {
+        if (err) callback(err);
+        else if (result.length === 0) callback("Freet does not exist");
+        else {
+            if (rawUsername) {
+                var freet = result[0];
+                var username = rawUsername.toLowerCase();
+                User.findByUsername(username, function(err, user) {
+                    if (err) {
+                        callback("Invalid username");
+                    } else if (username === freet.author) {
+                        callback("Cannot refreet own freet");
+                    } else {
+                        var newFreet = new Freet({
+                            text: freet.text,
+                            ts: timestamp,
+                            author: user.username,
+                            authorId: user._id,
+                            isRefreet: true,
+                            originalAuthor: freet.author,
+                        });
+                        newFreet.save(callback);
+                    }
+                });
+            } else callback("Invalid username");
+        }
+    });
 }
 
 /**

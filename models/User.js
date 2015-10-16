@@ -5,7 +5,6 @@ var userSchema = new mongoose.Schema({
     username: String,
     password: String, 
     follows: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'} ],
-    freets: [{type: mongoose.Schema.Types.ObjectId, ref: 'Freet'} ]
 });
 
 /**
@@ -58,10 +57,10 @@ userSchema.statics.createUser = function(rawUsername, password, callback) {
                 var hash = bcrypt.hashSync(password, salt);
                 var user = new User({
                     username: username,
-                    password: hash
+                    password: hash,
+                    follows: []
                 });
                 user.save(function(err,result) {
-                    // console.log(err);
                     if (err) callback(err);
                     else callback(null, {username: username});
                 });

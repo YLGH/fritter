@@ -143,7 +143,7 @@ describe("Freet", function() {
 
         // test nonexistent user
         it("should fail when has a nonexistent user", function (done) {
-            Freet.addFreet("djax", "hello world", Date.now(), function(err, result) {
+            Freet.addFreet("djax", "hello world", moment(), function(err, result) {
                 assert.notDeepEqual(err, null);
                 Freet.clearFreets();
                 done();
@@ -152,11 +152,52 @@ describe("Freet", function() {
 
         // test valid freet
         it("should succeed when has a valid username", function (done) {
-            Freet.addFreet("Kim", "hello world", Date.now(), function(err, result) {
+            Freet.addFreet("Kim", "hello world", moment(), function(err, result) {
                 assert.deepEqual(err, null);
                 assert.notDeepEqual(result._id, undefined);
                 Freet.clearFreets();
                 done();
+            });
+        });
+
+    });
+
+    //test refreet
+    describe("#refreet", function () {
+
+        // test nonexistent freet, should fail
+        it("should fail when has an invalid id", function (done) {
+            Freet.refreet("djax", "391494i92jq", moment(), function(err, result) {
+                assert.notDeepEqual(err, null);
+                Freet.clearFreets();
+                done();
+            });
+        });
+
+        // test same author
+        it("should fail when user refreets own tweet", function (done) {
+            Freet.addFreet("kim", "hello world", moment(), function(err, result) {
+                var id = result._id;
+                Freet.refreet("kim", id, moment(), function(err1, result1) {
+                    assert.notDeepEqual(err1, null);
+                    Freet.clearFreets();
+                    done();
+                });
+            });
+        });
+
+        // test valid freet, should succeed
+        it("should succeed when is a valid freet", function (done) {
+            Freet.addFreet("kim", "hello world", moment(), function(err, result) {
+                var id = result._id;
+                Freet.refreet("123", id, moment(), function(err1, result1) {
+                    Freet.getFreets("kim", function(err2, result2) {
+                        assert.deepEqual(err1, null);
+                        assert.deepEqual(result2.length, 2);
+                        Freet.clearFreets();
+                        done();
+                    });
+                });
             });
         });
 
@@ -175,9 +216,8 @@ describe("Freet", function() {
 
         // test valid freet
         it("should succeed when valid id", function (done) {
-            var id;
             Freet.addFreet("kim", "hello world", moment(), function(err, result) {
-                id = result._id;
+                var id = result._id;
                 Freet.getFreetById(id, function(err, result) {
                     assert.deepEqual(err, null);
                     assert.deepEqual(result.text, "hello world")
@@ -192,8 +232,8 @@ describe("Freet", function() {
     describe("#getFreets", function () {
         // test getting all the freets
         it("should return all freets", function (done) {
-            Freet.addFreet("123", "hello world1", Date.now(), function() {
-                Freet.addFreet("456", "hello world2", Date.now(), function() {
+            Freet.addFreet("123", "hello world1", moment(), function() {
+                Freet.addFreet("456", "hello world2", moment(), function() {
                     Freet.getFreets("123", function(err, result) {
                         assert.deepEqual(err, null);
                         assert.deepEqual(result.length,2);
@@ -214,7 +254,7 @@ describe("Freet", function() {
         // test delete freet authorized user
         it("should succeed when valid id and authorized user", function () {
             var id;
-            Freet.addFreet("kim", "hello 32world", Date.now(), function(err, result) {
+            Freet.addFreet("kim", "hello 32world", moment(), function(err, result) {
                 id = result.id;
                 Freet.getFreets("kim", function(err1, result1) {                    
                     Freet.deleteFreetById("Kim", id, function(err2, result2) {
@@ -233,7 +273,7 @@ describe("Freet", function() {
         // test delete freet unauthorized user
         it("should fail when valid id and unauthorized user", function (done) {
             var id;
-            Freet.addFreet("123", "hello world", Date.now(), function(err, result) {
+            Freet.addFreet("123", "hello world", moment(), function(err, result) {
                 id = result.id;
                 Freet.deleteFreetById("456", id, function(err, result) {
                     assert.notDeepEqual(err, null);
@@ -245,7 +285,7 @@ describe("Freet", function() {
 
         // test delete freet invalid id
         it("should fail when invalid id", function (done) {
-            Freet.addFreet("kim", "hello world", Date.now(), function(){});
+            Freet.addFreet("kim", "hello world", moment(), function(){});
             Freet.deleteFreetById("kim", "fakeId", function(err, result) {
                 assert.notDeepEqual(err, null);
                 done();
