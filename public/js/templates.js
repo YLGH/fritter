@@ -19,15 +19,17 @@ templates['home'] = template({"1":function(container,depth0,helpers,partials,dat
 },"3":function(container,depth0,helpers,partials,data) {
     return "    <div id=\"new-freet-box\">\n      <form id=\"freet-form\">\n        <input id=\"freet-input\" class=\"input\" type=\"text\" maxlength=\"160\">\n        <button id=\"freet-button\" class=\"button\" type=\"submit\">Freet!</button>\n      </form>\n    </div>\n";
 },"5":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : {};
 
   return "      <div id="
     + alias2(alias1((depth0 != null ? depth0._id : depth0), depth0))
     + " class=\"freet-box\">\n        "
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.ownership : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n        <div class=\"freet-user\">@"
+    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.ownership : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.program(8, data, 0),"data":data})) != null ? stack1 : "")
+    + "        <div class=\"freet-user\">@<b>"
     + alias2(alias1((depth0 != null ? depth0.author : depth0), depth0))
-    + " </div>\n        <em class=\"freet-time\">("
+    + "</b> </div>\n        "
+    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.isRefreet : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n        <em class=\"freet-time\">("
     + alias2(alias1((depth0 != null ? depth0.ts : depth0), depth0))
     + ")</em> - <p class=\"freet-text\">"
     + alias2(alias1((depth0 != null ? depth0.text : depth0), depth0))
@@ -35,7 +37,15 @@ templates['home'] = template({"1":function(container,depth0,helpers,partials,dat
 },"6":function(container,depth0,helpers,partials,data) {
     return "<button freet="
     + container.escapeExpression(container.lambda((depth0 != null ? depth0._id : depth0), depth0))
-    + " class=\"delete-button no-border\">X</button>";
+    + " class=\"delete-button no-border\">X</button>\n        ";
+},"8":function(container,depth0,helpers,partials,data) {
+    return "<button freet="
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0._id : depth0), depth0))
+    + " class=\"rf-button\">RF</button>\n";
+},"10":function(container,depth0,helpers,partials,data) {
+    return " refreeted "
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.originalAuthor : depth0), depth0))
+    + " ";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 

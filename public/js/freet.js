@@ -15,6 +15,20 @@ $(function() {
         });
     });
 
+    // Refreet a freet
+    $(document).on("click", ".rf-button", function(e) {
+        var id = $(e.target).attr("freet");
+        $.post(
+            '/freets/rf',
+            { freetId: id }
+        ).done(function(response) {
+            loadPage();
+        }).fail(function(responseObject) {
+            var response = $.parseJSON(responseObject.responseText);
+            helpers.displayError("#freet-error",response.err);
+        });
+    });
+
     // Delete a freet
     $(document).on("click", ".delete-button", function(e) {
         var id = $(e.target).attr("freet");

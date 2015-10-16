@@ -59,6 +59,25 @@ router.post('/add', function(req, res) {
 })
 
 /*
+  POST /freets/rf - refreet a freet (must be valid user)
+  Request parameters:
+    - freetId: id of the freet to refreeet
+  Response: 
+    - success: true if freet addition succeeded
+    - content: on success, the freet ID
+    - err: on failure, an error message
+ */
+router.post('/rf', function(req, res) {
+    Freet.refreet(req.currentUser.username, req.body.freetId, moment(), function(err, result) {
+        if (err) {
+            utils.sendErrResponse(res, 403, err);
+        } else {
+            utils.sendSuccessResponse(res, result);
+        }
+    });
+})
+
+/*
   POST /freets/delete - delete a freet (must be authorized user)
   Request parameters:
     - freetId: the freet UUID

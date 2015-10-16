@@ -114,7 +114,8 @@ body {
 .freet-text {
   display: inline-block; }
 
-.delete-button {
+.delete-button,
+.rf-button {
   float: right; }
 
 /* Forms */
