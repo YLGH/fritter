@@ -66,13 +66,13 @@ freetSchema.statics.getFreets = function(callback) {
  * @param id {string} - freet uuid
  * @param callback {function} - function to be called with err and result
  */
-freetSchema.statics.deleteFreetById = function(username, id, callback) {
-    this.find({author: username, _id: id}, function(err, result) {
-        console.log(result);
+freetSchema.statics.deleteFreetById = function(rawUsername, id, callback) {
+    var username = rawUsername.toLowerCase();
+    this.remove({author: username, _id: id}, function(err, result) {
         if (err) callback(err);
-        else if (result.length === 0) callback("Freet not found/authorized");
-        else callback(null, result);
-    }).remove();
+        else if (result.result.n === 0) callback("Deletion failed");
+        else callback(null);
+    });
 }
 
 /**

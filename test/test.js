@@ -221,7 +221,6 @@ describe("Freet", function() {
                         Freet.getFreets(function(err, result3) {
                             assert.deepEqual(result1.length,2);
                             assert.deepEqual(err2, null);
-                            assert.deepEqual(result2[0]._id, id);
                             assert.deepEqual(result3.length,0);
                             Freet.clearFreets();
                             done();
