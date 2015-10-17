@@ -2,14 +2,17 @@
   <div id="user">
     {{#if user}}
       <h2>{{user}}</h2> 
+      Follows:{{#each follows}} {{this}}{{/each}}<br>
       <button class="button button-sm" id="go-home">back</button>
-      {{#if isOtherUser}}<button class="button button-sm" user={{user}} id="follow-user">follow</button>{{/if}}
+      {{#if canFollow}}<button class="button button-sm" user={{user}} id="follow-user">follow</button>{{/if}}
     {{else}}
+      {{#if filteredView}}<button class="button button-sm" id="go-home">back</button>{{/if}}
       {{#if currentUser}}
       <div id="new-freet-box">
         <form id="freet-form">
           <input id="freet-input" class="input" type="text" maxlength="160">
-          <button id="freet-button" class="button" type="submit">Freet!</button>
+          <button id="freet-button" class="button search-row-button" type="submit">Freet!</button>
+          <button id="view-follows" class="button search-row-button">Filter Follows</button>
         </form>
       </div>
     {{/if}}

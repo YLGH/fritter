@@ -102,7 +102,7 @@ a:hover {
 #freet-input {
   border: 1px solid #BD1550; }
 
-#freet-button {
+.search-row-button {
   position: relative;
   top: -2px; }
 

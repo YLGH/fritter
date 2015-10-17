@@ -30,7 +30,6 @@ var loadPage = function(data) {
 //load a user page
 var loadUserPage = function(username) {
     var data = {user: username};
-    data.isOtherUser = username !== currentUser;
     $.get('/freets/filter', {authors: [username]}, function(response) {
         data.freets = response.content.reverse();
         data.freets.forEach(function(f) {
@@ -39,9 +38,34 @@ var loadUserPage = function(username) {
                 f["ownership"] = true;
             }
         });
-        $('#container').html(Handlebars.templates["home"](data));
+        $.get('/users/follows', {username: username}, function(response) {
+            data.follows = response.content.result;
+            $.get('/users/follows', {username: currentUser}, function(response) {
+                data.canFollow = username !== currentUser && response.content.result.indexOf(username) === -1;
+                console.log(data);
+                $('#container').html(Handlebars.templates["home"](data));
+            });
+        })
     });
+}
 
+//load follows page
+var loadFollowsPage = function() {
+    var data = {filteredView: true};
+    $.get('/users/follows', {username: currentUser}, function(response) {
+        var follows = response.content.result;
+        $.get('/freets/filter', {authors: follows}, function(response) {
+            data.freets = response.content.reverse();
+            data.freets.forEach(function(f) {
+                f.ts = moment(f.ts).fromNow();
+                if (currentUser === f.author) {
+                    f["ownership"] = true;
+                }
+            });
+            console.log(data);
+            $('#container').html(Handlebars.templates["home"](data));
+        })
+    });
 }
 
 // Initialize the main page with tweets

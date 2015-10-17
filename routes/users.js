@@ -92,4 +92,50 @@ router.get('/current', function(req, res) {
     }
 });
 
+/*
+  GET /users/follows - get user's follows list
+  Request parameters: 
+    - username: the username of the follower
+  Response: 
+    - success: true if login succeeded
+    - content: on success, a list of usernames the user follows
+    - err: on failure, an error message
+ */
+router.get('/follows', function(req, res) {
+    if (req.currentUser) {
+        User.getFollows(req.query.username, function(err, result) {
+            if (err) {
+                utils.sendErrResponse(res, 403, err);
+            } else {
+                utils.sendSuccessResponse(res, { result: result} );
+            }
+        })
+    } else {
+        utils.sendSuccessResponse(res, { loggedIn : false });
+    }
+});
+
+/*
+  POST /users/follow - follow a user
+  Request parameters: 
+    - username: the username to follow
+  Response: 
+    - success: true if login succeeded
+    - content: on success, a list of usernames the user follows
+    - err: on failure, an error message
+ */
+router.post('/follow', function(req, res) {
+    if (req.currentUser) {
+        User.followUser(req.currentUser.username, req.body.username, function(err, result) {
+            if (err) {
+                utils.sendErrResponse(res, 403, err);
+            } else {
+                utils.sendSuccessResponse(res, { result: result} );
+            }
+        })
+    } else {
+        utils.sendSuccessResponse(res, { loggedIn : false });
+    }
+});
+
 module.exports = router;
