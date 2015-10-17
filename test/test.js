@@ -89,6 +89,33 @@ describe("User", function() {
 
     });
 
+    //test getFollows
+    describe("#getFollows", function () {
+        // test nonexistent user
+        it("should return error when user does not exist", function (done) {
+            User.getFollows("fail", function(err, result) {
+                assert.notDeepEqual(err, null);
+                done();
+            });
+        });
+
+        // test success
+        it("should return results when user follows successfully", function (done) {
+            User.followUser("456", "123", function(err1,result1) {
+                User.followUser("456", "kim", function(err2, result2) {
+                    User.getFollows("456", function(err, result) {
+                        assert.deepEqual(err, null);
+                        assert.deepEqual(result.length, 2);
+                        assert.ok(result.indexOf("kim") > -1);
+                        assert.ok(result.indexOf("123") > -1);
+                        done();
+                    });
+                })
+            })
+        });
+
+    });
+
     //test authUser
     describe("#authUser", function () {
 

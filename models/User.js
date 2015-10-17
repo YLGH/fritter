@@ -56,6 +56,23 @@ userSchema.statics.followUser = function(rawFollower, rawUsername, callback) {
 }
 
 /**
+ * Get follows
+ *
+ * @param rawUsername {string} - username of follower
+ * @param callback {function} - function to call with error and result
+ */
+userSchema.statics.getFollows = function(rawUsername, callback) {
+    var username = rawUsername.toLowerCase();
+    this.find({ username: username }, function(err, result) {
+        if (err) callback(err);
+        else if (result.length === 0) callback("User not found");
+        else {
+            callback(null, result[0].follows);
+        }
+    });
+}
+
+/**
  * Authenticate a user
  *
  * @param username {string} - username to check
