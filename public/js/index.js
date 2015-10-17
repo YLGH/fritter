@@ -21,10 +21,26 @@ var loadPage = function(data) {
                 f["ownership"] = true;
             }
         });
-        data["freets"] = response.content.reverse();
+        data.freets = response.content.reverse();
         $('#container').html(Handlebars.templates["home"](data));
         $('#header').html(Handlebars.templates["header"]({currentUser: currentUser}));
     });
+}
+
+//load a user page
+var loadUserPage = function(username) {
+    var data = {user: username};
+    $.get('/freets/filter', {authors: [username]}, function(response) {
+        data.freets = response.content.reverse();
+        data.freets.forEach(function(f) {
+            f.ts = moment(f.ts).fromNow();
+            if (currentUser === f.author) {
+                f["ownership"] = true;
+            }
+        });
+        $('#container').html(Handlebars.templates["home"](data));
+    });
+
 }
 
 // Initialize the main page with tweets

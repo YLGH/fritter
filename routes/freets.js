@@ -22,6 +22,24 @@ router.get('/', function(req, res) {
 });
 
 /*
+  GET /freets/filter - get all freets
+  Request parameters:
+    - authors: array of authors whose tweets to see
+  Response: 
+    - success: true if getFreets succeeded
+    - content: on success, a list of all freet objects
+ */
+router.get('/filter', function(req, res) {
+  var username = undefined;
+  if (req.currentUser) {
+    username = req.currentUser.username;
+  }
+  Freet.getFreetsByAuthor(username, req.query.authors, function(err,result) {
+      utils.sendSuccessResponse(res, result);
+  });
+});
+
+/*
   GET /freets/{freetId} - get a single freet
   Request parameters: none
   Response: 

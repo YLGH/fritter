@@ -11,6 +11,14 @@ body {
     padding: 0;
     font-family: "Lato", sans-serif;
 }
+a,
+a:visited {
+    color: $primary;
+    text-decoration: none;
+}
+a:hover {
+    color: $secondary;
+}
 #container {
     background-color: $secondary;
 }
@@ -123,6 +131,9 @@ body {
 }
 .freet-time {
     font-size: 75%;
+}
+.freet-user {
+    cursor: pointer;
 }
 .freet-user,
 .freet-text {
