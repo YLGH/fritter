@@ -59,6 +59,8 @@ freetSchema.statics.refreet = function(rawUsername, id, timestamp, callback) {
                         callback("Invalid username");
                     } else if (username === freet.author) {
                         callback("Cannot refreet own freet");
+                    } else if (freet.isRefreet) {
+                        callback("Cannot refreet refreet");
                     } else {
                         var newFreet = new Freet({
                             text: freet.text,

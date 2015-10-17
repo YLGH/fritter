@@ -22,7 +22,7 @@
       {{#each freets}}
         <div id={{this._id}} class="freet-box">
           {{#if this.ownership}}<button freet={{this._id}} class="delete-button no-border">X</button>
-          {{else}}<button freet={{this._id}} class="rf-button">RF</button>
+          {{else}} {{#if this.isRefreet}} {{else}}<button freet={{this._id}} class="rf-button">RF</button>{{/if}}
           {{/if}}
           <b><a href="#" class="freet-user" user={{this.author}}>@{{this.author}} </a></b>
           {{#if this.isRefreet}} refreeted {{this.originalAuthor}} {{/if}}

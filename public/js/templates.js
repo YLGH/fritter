@@ -43,7 +43,7 @@ templates['home'] = template({"1":function(container,depth0,helpers,partials,dat
     + ">@"
     + alias2(alias1((depth0 != null ? depth0.author : depth0), depth0))
     + " </a></b>\n          "
-    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.isRefreet : depth0),{"name":"if","hash":{},"fn":container.program(13, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.isRefreet : depth0),{"name":"if","hash":{},"fn":container.program(16, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n          <em class=\"freet-time\">("
     + alias2(alias1((depth0 != null ? depth0.ts : depth0), depth0))
     + ")</em> - <p class=\"freet-text\">"
@@ -54,10 +54,18 @@ templates['home'] = template({"1":function(container,depth0,helpers,partials,dat
     + container.escapeExpression(container.lambda((depth0 != null ? depth0._id : depth0), depth0))
     + " class=\"delete-button no-border\">X</button>\n          ";
 },"11":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return " "
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.isRefreet : depth0),{"name":"if","hash":{},"fn":container.program(12, data, 0),"inverse":container.program(14, data, 0),"data":data})) != null ? stack1 : "")
+    + "\n";
+},"12":function(container,depth0,helpers,partials,data) {
+    return " ";
+},"14":function(container,depth0,helpers,partials,data) {
     return "<button freet="
     + container.escapeExpression(container.lambda((depth0 != null ? depth0._id : depth0), depth0))
-    + " class=\"rf-button\">RF</button>\n";
-},"13":function(container,depth0,helpers,partials,data) {
+    + " class=\"rf-button\">RF</button>";
+},"16":function(container,depth0,helpers,partials,data) {
     return " refreeted "
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.originalAuthor : depth0), depth0))
     + " ";

@@ -67,13 +67,17 @@ router.get('/:fid', function(req, res) {
     - err: on failure, an error message
  */
 router.post('/add', function(req, res) {
-    Freet.addFreet(req.currentUser.username, req.body.freet, moment(), function(err, result) {
-        if (err) {
-            utils.sendErrResponse(res, 403, err);
-        } else {
-            utils.sendSuccessResponse(res, result);
-        }
-    });
+  var username = undefined;
+  if (req.currentUser) {
+    username = req.currentUser.username;
+  }
+  Freet.addFreet(username, req.body.freet, moment(), function(err, result) {
+      if (err) {
+          utils.sendErrResponse(res, 403, err);
+      } else {
+          utils.sendSuccessResponse(res, result);
+      }
+  });
 })
 
 /*
@@ -86,7 +90,11 @@ router.post('/add', function(req, res) {
     - err: on failure, an error message
  */
 router.post('/rf', function(req, res) {
-    Freet.refreet(req.currentUser.username, req.body.freetId, moment(), function(err, result) {
+  var username = undefined;
+  if (req.currentUser) {
+    username = req.currentUser.username;
+  }
+    Freet.refreet(username, req.body.freetId, moment(), function(err, result) {
         if (err) {
             utils.sendErrResponse(res, 403, err);
         } else {
@@ -105,7 +113,11 @@ router.post('/rf', function(req, res) {
     - err: on failure, an error message
  */
 router.post('/delete', function(req, res) {
-    Freet.deleteFreetById(req.currentUser.username, req.body.freetId, function(err, result) {
+  var username = undefined;
+  if (req.currentUser) {
+    username = req.currentUser.username;
+  }
+    Freet.deleteFreetById(username, req.body.freetId, function(err, result) {
         if (err) {
             utils.sendErrResponse(res, 403, err);
         } else {
