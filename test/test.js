@@ -14,9 +14,9 @@ User.createUser("456", "pa1242412ss2", function(){});
 describe("User", function() {
 
     //test findByUsername
-    describe("#findByUsername", function (done) {
+    describe("#findByUsername", function () {
         // test nonexistent user
-        it("should return error when user does not exist", function () {
+        it("should return error when user does not exist", function (done) {
             User.findByUsername("hello", function(err, result) {
                 assert.notDeepEqual(err, null);
                 done();
@@ -37,6 +37,52 @@ describe("User", function() {
             User.findByUsername("Kim", function(err, result) {
                 assert.deepEqual(err, null);
                 assert.deepEqual(result.username, "kim");
+                done();
+            });
+        });
+
+    });
+
+    //test followUser
+    describe("#followUser", function () {
+        // test nonexistent user
+        it("should return error when user does not exist", function (done) {
+            User.followUser("123", "fail", function(err, result) {
+                assert.notDeepEqual(err, null);
+                done();
+            });
+        });
+
+        // test nonexistent follower
+        it("should return error when follower does not exist", function (done) {
+            User.followUser("fake_user", "kim", function(err, result) {
+                assert.notDeepEqual(err, null);
+                done();
+            });
+        });
+
+        // test following self
+        it("should return error when follower tries to follow self", function (done) {
+            User.followUser("kim", "kim", function(err, result) {
+                assert.notDeepEqual(err, null);
+                done();
+            });
+        });
+
+        // test already following
+        it("should return error when follower already follows user", function (done) {
+            User.followUser("123", "kim", function(err, result) {
+                User.followUser("123", "kim", function(err2, result) {
+                    assert.notDeepEqual(err2, null);
+                    done();
+                });
+            });
+        });
+
+        // test success
+        it("should return success when user follows successfully", function (done) {
+            User.followUser("kim", "123", function(err, result) {
+                assert.deepEqual(err, null);
                 done();
             });
         });
@@ -297,16 +343,16 @@ describe("Freet", function() {
     });
 
     //test deleteFreetById
-    describe("#deleteFreetById", function (done) {
+    describe("#deleteFreetById", function () {
         // test delete freet authorized user
-        it("should succeed when valid id and authorized user", function () {
+        it("should succeed when valid id and authorized user", function (done) {
             var id;
             Freet.addFreet("kim", "hello 32world", moment(), function(err, result) {
                 id = result.id;
-                Freet.getFreets("kim", function(err1, result1) {                    
+                Freet.getFreets("kim", function(err1, result1) {    
                     Freet.deleteFreetById("Kim", id, function(err2, result2) {
                         Freet.getFreets("kim", function(err, result3) {
-                            assert.deepEqual(result1.length,2);
+                            assert.deepEqual(result1.length,1);
                             assert.deepEqual(err2, null);
                             assert.deepEqual(result3.length,0);
                             Freet.clearFreets();
