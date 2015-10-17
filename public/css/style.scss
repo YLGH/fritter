@@ -168,6 +168,10 @@ a:hover {
     font-size: 125%;
     color: $buttontext;
 }
+.button-sm {
+    height: 25px;
+    font-size: 100%;
+}
 .button-light {
     background-color: transparent;
     border: 2px solid $headertext;

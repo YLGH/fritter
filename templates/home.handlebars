@@ -1,7 +1,9 @@
 <div id="home">
   <div id="user">
     {{#if user}}
-      <h2>{{user}} (<a href="#" id="go-home">back</a>)</h2>
+      <h2>{{user}}</h2> 
+      <button class="button button-sm" id="go-home">back</button>
+      {{#if isOtherUser}}<button class="button button-sm" user={{user}} id="follow-user">follow</button>{{/if}}
     {{else}}
       {{#if currentUser}}
       <div id="new-freet-box">

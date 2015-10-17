@@ -30,6 +30,7 @@ var loadPage = function(data) {
 //load a user page
 var loadUserPage = function(username) {
     var data = {user: username};
+    data.isOtherUser = username !== currentUser;
     $.get('/freets/filter', {authors: [username]}, function(response) {
         data.freets = response.content.reverse();
         data.freets.forEach(function(f) {

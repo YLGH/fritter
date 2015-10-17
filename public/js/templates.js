@@ -15,57 +15,65 @@ templates['header'] = template({"1":function(container,depth0,helpers,partials,d
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.currentUser : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "");
 },"useData":true});
 templates['home'] = template({"1":function(container,depth0,helpers,partials,data) {
-    var helper;
+    var stack1, helper, alias1=depth0 != null ? depth0 : {};
 
   return "      <h2>"
+    + container.escapeExpression(((helper = (helper = helpers.user || (depth0 != null ? depth0.user : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"user","hash":{},"data":data}) : helper)))
+    + "</h2> \n      <button class=\"button button-sm\" id=\"go-home\">back</button>\n      "
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isOtherUser : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "<button class=\"button button-sm\" user="
     + container.escapeExpression(((helper = (helper = helpers.user || (depth0 != null ? depth0.user : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"user","hash":{},"data":data}) : helper)))
-    + " (<a href=\"#\" id=\"go-home\">back</a>)</h2>\n";
-},"3":function(container,depth0,helpers,partials,data) {
+    + " id=\"follow-user\">follow</button>";
+},"4":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 
-  return ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.currentUser : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+  return ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.currentUser : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    <div id=\"freet-error\" class=\"error\">\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.notLoggedIn : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.notLoggedIn : depth0),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "      </div>\n    </div>\n";
-},"4":function(container,depth0,helpers,partials,data) {
+},"5":function(container,depth0,helpers,partials,data) {
     return "      <div id=\"new-freet-box\">\n        <form id=\"freet-form\">\n          <input id=\"freet-input\" class=\"input\" type=\"text\" maxlength=\"160\">\n          <button id=\"freet-button\" class=\"button\" type=\"submit\">Freet!</button>\n        </form>\n      </div>\n";
-},"6":function(container,depth0,helpers,partials,data) {
+},"7":function(container,depth0,helpers,partials,data) {
     return "          Log in or register to view freets!\n";
-},"8":function(container,depth0,helpers,partials,data) {
+},"9":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : {};
 
   return "        <div id="
     + alias2(alias1((depth0 != null ? depth0._id : depth0), depth0))
     + " class=\"freet-box\">\n          "
-    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.ownership : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0),"inverse":container.program(11, data, 0),"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.ownership : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0),"inverse":container.program(12, data, 0),"data":data})) != null ? stack1 : "")
     + "          <b><a href=\"#\" class=\"freet-user\" user="
     + alias2(alias1((depth0 != null ? depth0.author : depth0), depth0))
     + ">@"
     + alias2(alias1((depth0 != null ? depth0.author : depth0), depth0))
     + " </a></b>\n          "
-    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.isRefreet : depth0),{"name":"if","hash":{},"fn":container.program(16, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.isRefreet : depth0),{"name":"if","hash":{},"fn":container.program(17, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n          <em class=\"freet-time\">("
     + alias2(alias1((depth0 != null ? depth0.ts : depth0), depth0))
     + ")</em> - <p class=\"freet-text\">"
     + alias2(alias1((depth0 != null ? depth0.text : depth0), depth0))
     + "</p>\n        </div>\n";
-},"9":function(container,depth0,helpers,partials,data) {
+},"10":function(container,depth0,helpers,partials,data) {
     return "<button freet="
     + container.escapeExpression(container.lambda((depth0 != null ? depth0._id : depth0), depth0))
     + " class=\"delete-button no-border\">X</button>\n          ";
-},"11":function(container,depth0,helpers,partials,data) {
+},"12":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return " "
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.isRefreet : depth0),{"name":"if","hash":{},"fn":container.program(12, data, 0),"inverse":container.program(14, data, 0),"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.isRefreet : depth0),{"name":"if","hash":{},"fn":container.program(13, data, 0),"inverse":container.program(15, data, 0),"data":data})) != null ? stack1 : "")
     + "\n";
-},"12":function(container,depth0,helpers,partials,data) {
+},"13":function(container,depth0,helpers,partials,data) {
     return " ";
-},"14":function(container,depth0,helpers,partials,data) {
+},"15":function(container,depth0,helpers,partials,data) {
     return "<button freet="
     + container.escapeExpression(container.lambda((depth0 != null ? depth0._id : depth0), depth0))
     + " class=\"rf-button\">RF</button>";
-},"16":function(container,depth0,helpers,partials,data) {
+},"17":function(container,depth0,helpers,partials,data) {
     return " refreeted "
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.originalAuthor : depth0), depth0))
     + " ";
@@ -73,9 +81,9 @@ templates['home'] = template({"1":function(container,depth0,helpers,partials,dat
     var stack1, alias1=depth0 != null ? depth0 : {};
 
   return "<div id=\"home\">\n  <div id=\"user\">\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.user : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.user : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
     + "    <div id=\"freet-container\">\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.freets : depth0),{"name":"each","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.freets : depth0),{"name":"each","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n  </div>\n</div>";
 },"useData":true});
 templates['login'] = template({"1":function(container,depth0,helpers,partials,data) {
