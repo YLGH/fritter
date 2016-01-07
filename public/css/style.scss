@@ -168,6 +168,9 @@ a:hover {
     font-size: 125%;
     color: $buttontext;
 }
+.button:hover {
+    background-color: darken($secondary, 10%);
+}
 .button-sm {
     height: 25px;
     font-size: 100%;
