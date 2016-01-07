@@ -15,10 +15,13 @@ router.get('/', function(req, res) {
   var username = undefined;
   if (req.currentUser) {
     username = req.currentUser.username;
+    Freet.getFreets(username, function(err,result) {
+        utils.sendSuccessResponse(res, result);
+    });
+  } else {
+    utils.sendErrResponse(res, 403, 'Not authenticated');
   }
-  Freet.getFreets(username, function(err,result) {
-      utils.sendSuccessResponse(res, result);
-  });
+  
 });
 
 /*
@@ -33,10 +36,12 @@ router.get('/filter', function(req, res) {
   var username = undefined;
   if (req.currentUser) {
     username = req.currentUser.username;
-  }
-  Freet.getFreetsByAuthor(username, req.query.authors, function(err,result) {
+    Freet.getFreetsByAuthor(username, req.query.authors, function(err,result) {
       utils.sendSuccessResponse(res, result);
-  });
+    });
+  } else {
+    utils.sendErrResponse(res, 403, 'Not authenticated');
+  }
 });
 
 /*

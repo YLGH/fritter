@@ -11,20 +11,22 @@ var loadPage = function(data) {
     data = data || {currentUser: currentUser};
     if (!currentUser) {
         data.notLoggedIn = true;
-    } else {
-        data.notLoggedIn = false;
-    }
-    $.get('/freets', function(response) {
-        (response.content).forEach(function(f) {
-            f.ts = moment(f.ts).fromNow();
-            if (currentUser === f.author) {
-                f["ownership"] = true;
-            }
-        });
-        data.freets = response.content.reverse();
         $('#container').html(Handlebars.templates["home"](data));
         $('#header').html(Handlebars.templates["header"]({currentUser: currentUser}));
-    });
+    } else {
+        data.notLoggedIn = false;
+        $.get('/freets', function(response) {
+            (response.content).forEach(function(f) {
+                f.ts = moment(f.ts).fromNow();
+                if (currentUser === f.author) {
+                    f["ownership"] = true;
+                }
+            });
+            data.freets = response.content.reverse();
+            $('#container').html(Handlebars.templates["home"](data));
+            $('#header').html(Handlebars.templates["header"]({currentUser: currentUser}));
+        });
+    }
 }
 
 //load a user page

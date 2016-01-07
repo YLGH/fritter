@@ -2,18 +2,21 @@ $(function() {
 
     // Show login popup
     $(document).on("click", "#show-login", function(e) {
+        e.preventDefault();
         helpers.showPopup();
         $('#popup').html(Handlebars.templates["login"]({register: false}));
     });
 
     // Show register popup
     $(document).on("click", "#show-register", function(e) {
+        e.preventDefault();
         helpers.showPopup();
         $('#popup').html(Handlebars.templates["login"]({register: true}));
     });
 
     // Hide popup
     $(document).on("click", "#close-popup", function(e) {
+        e.preventDefault();
         helpers.hidePopup();
     });
 
@@ -55,6 +58,7 @@ $(function() {
 
     // Log out
     $(document).on("click", "#logout-button", function(e) {
+        e.preventDefault();
         currentUser = undefined;
         $.post(
             '/users/logout'
